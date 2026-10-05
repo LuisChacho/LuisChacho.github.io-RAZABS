@@ -1,4 +1,9 @@
-// HELPER COMPLETO PARA GENERAR DIBUJOS Y SECUENCIAS SVG TIPO CENES CON ALTO CONTRASTE
+// OBTENER COLOR DE TRAZO PARA BOTONES SEGÚN EL TEMA ACTIVO
+function getOptionStrokeColor() {
+  return document.body.classList.contains('theme-dark') ? '#f8fafc' : '#0f172a';
+}
+
+// HELPER PARA RENDERIZAR GRÁFICOS SVG DEL LIBRO CENES EN EL VISOR PRINCIPAL (FONDO NOCTURNO)
 function renderSVGPattern(tipo, p) {
   
   // 1. MUESTRA COMPLETA DE 16 CARAS VARIADAS (PÁGS. 39-41)
@@ -155,7 +160,7 @@ function renderSVGPattern(tipo, p) {
 
     <rect x="200" y="15" width="50" height="50" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
     <polygon points="225,23 209,55 241,55" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <text x="225" y="73" fill="#94a3b8" font-size="10" text-anchor="middle">C</text>
+    <text x="225" y="73" fill="#818cf8" font-size="10" text-anchor="middle">C</text>
 
     <text x="262" y="44" fill="#818cf8" font-size="11" font-weight="bold">ES A</text>
 
@@ -164,22 +169,80 @@ function renderSVGPattern(tipo, p) {
   </svg>`;
 }
 
-// RENDERIZADOR DE OPCIONES VECTORIALES VISIBLES EN BOTONES BLANCOS (ALTO CONTRASTE)
-function renderOptionSVG(angle) {
-  const norm = ((angle % 360) + 360) % 360;
-  return `<svg width="55" height="55" viewBox="0 0 55 55" xmlns="http://www.w3.org/2000/svg">
-    <g transform="translate(27.5, 27.5) rotate(${norm})">
-      <circle cx="0" cy="0" r="20" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/>
-      <line x1="0" y1="-16" x2="0" y2="16" stroke="#0f172a" stroke-width="2.5"/>
-      <polygon points="0,-16 -6,-6 6,-6" fill="#4f46e5"/>
-      <circle cx="10" cy="0" r="3.5" fill="#0284c7"/>
-    </g>
-  </svg>`;
+// RENDERIZADOR DE OPCIONES VECTORIALES ADAPTATIVAS PARA AMBOS TEMAS
+function renderOptionSVG(type, param) {
+  const c = getOptionStrokeColor();
+
+  if (type === "rot") {
+    const norm = ((param % 360) + 360) % 360;
+    return `<svg width="55" height="55" viewBox="0 0 55 55" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(27.5, 27.5) rotate(${norm})">
+        <circle cx="0" cy="0" r="20" stroke="${c}" stroke-width="2" fill="none"/>
+        <line x1="0" y1="-16" x2="0" y2="16" stroke="${c}" stroke-width="2.5"/>
+        <polygon points="0,-16 -6,-6 6,-6" fill="#4f46e5"/>
+        <circle cx="10" cy="0" r="3.5" fill="#0284c7"/>
+      </g>
+    </svg>`;
+  }
+
+  if (type === "sec") {
+    if (param === 0) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="18" stroke="${c}" stroke-width="2" fill="none"/><path d="M 25 7 L 25 43 M 7 25 L 43 25 M 12 12 L 38 38 M 12 38 L 38 12" stroke="${c}" stroke-width="2"/></svg>`;
+    }
+    if (param === 1) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="18" stroke="${c}" stroke-width="2" fill="#4f46e5"/></svg>`;
+    }
+    if (param === 2) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="18" stroke="${c}" stroke-width="2" fill="none"/><line x1="25" y1="7" x2="25" y2="43" stroke="${c}" stroke-width="2"/></svg>`;
+    }
+    return `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="${c}" stroke-width="2" fill="none"/></svg>`;
+  }
+
+  if (type === "mat") {
+    if (param === 0) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="${c}" stroke-width="2" fill="none"/><polygon points="25,18 16,33 34,33" fill="#4f46e5"/></svg>`;
+    }
+    if (param === 1) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="18" stroke="${c}" stroke-width="2" fill="none"/></svg>`;
+    }
+    if (param === 2) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="${c}" stroke-width="2" fill="none"/></svg>`;
+    }
+    return `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="${c}" stroke-width="2" fill="#4f46e5"/></svg>`;
+  }
+
+  if (type === "sup") {
+    if (param === 0) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="${c}" stroke-width="2" fill="none"/><line x1="10" y1="10" x2="40" y2="40" stroke="${c}" stroke-width="2"/><line x1="40" y1="10" x2="10" y2="40" stroke="${c}" stroke-width="2"/></svg>`;
+    }
+    if (param === 1) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="${c}" stroke-width="2" fill="none"/></svg>`;
+    }
+    if (param === 2) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="${c}" stroke-width="2" fill="none"/></svg>`;
+    }
+    return `<svg width="50" height="50" viewBox="0 0 50 50"><line x1="10" y1="25" x2="40" y2="25" stroke="${c}" stroke-width="2"/></svg>`;
+  }
+
+  if (type === "ana") {
+    if (param === 0) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="${c}" stroke-width="2" fill="#4f46e5"/></svg>`;
+    }
+    if (param === 1) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="${c}" stroke-width="2" fill="none"/></svg>`;
+    }
+    if (param === 2) {
+      return `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="${c}" stroke-width="2" fill="#4f46e5"/></svg>`;
+    }
+    return `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="${c}" stroke-width="2" fill="#4f46e5"/></svg>`;
+  }
+
+  return `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="${c}" stroke-width="2" fill="none"/><line x1="25" y1="10" x2="25" y2="40" stroke="${c}" stroke-width="2"/></svg>`;
 }
 
-// FUNCIÓN DE DISTRIBUCIÓN BALANCEADA Y ROTATIVA DE LAS RESPUESTAS (A, B, C, D)
+// BALANCEO ALEATORIO ROTATIVO DE RESPUESTAS (A, B, C, D)
 function getBalancedOptions(rawOptions, targetCorrectIdx, itemIndex) {
-  const desiredCorrectLetterIdx = itemIndex % 4; // 0=A, 1=B, 2=C, 3=D
+  const desiredCorrectLetterIdx = itemIndex % 4; // Rotación equitativa: 0=A, 1=B, 2=C, 3=D
   const resultOptions = new Array(4);
   
   resultOptions[desiredCorrectLetterIdx] = rawOptions[targetCorrectIdx];
@@ -198,7 +261,7 @@ function getBalancedOptions(rawOptions, targetCorrectIdx, itemIndex) {
   };
 }
 
-// CONSTRUCCIÓN COMPLETA DE LAS 100 PREGUNTAS ÚNICAS
+// BANCO DE 100 PREGUNTAS ÚNICAS
 const preguntas = [];
 
 // MÓDULO 1: CONTEO DE CARAS VARIADAS (1 al 15)
@@ -237,6 +300,7 @@ for (let i = 1; i <= 15; i++) {
 
   preguntas.push({
     id: i,
+    type: "text",
     categoria: "Conteo de Caras y Patrones",
     enunciado: `¿Cuántos rostros ${esTriste ? 'tristes' : 'alegres'} con ojos ${esOjos ? 'abiertos' : 'cerrados'} se encuentran en la muestra #${i}?`,
     svg: renderSVGPattern("cara", {
@@ -255,19 +319,20 @@ const angulosRot = [45, 90, 135, 180, 225, 270, 315, 540, 1125, 360, 405, 450, 4
 for (let i = 16; i <= 35; i++) {
   const deg = angulosRot[i - 16];
   const esHorario = i % 2 === 0;
-
   const correctAngle = esHorario ? deg : -deg;
+
   const rawOptions = [
-    { html: renderOptionSVG(correctAngle) },
-    { html: renderOptionSVG(correctAngle + 90) },
-    { html: renderOptionSVG(correctAngle - 90) },
-    { html: renderOptionSVG(correctAngle + 180) }
+    { svgType: "rot", param: correctAngle },
+    { svgType: "rot", param: correctAngle + 90 },
+    { svgType: "rot", param: correctAngle - 90 },
+    { svgType: "rot", param: correctAngle + 180 }
   ];
 
   const balanced = getBalancedOptions(rawOptions, 0, i - 1);
 
   preguntas.push({
     id: i,
+    type: "svg",
     categoria: "Rotaciones Gráficas",
     enunciado: `Identifique la figura resultante al aplicar una rotación de ${deg}° en sentido ${esHorario ? 'horario' : 'antihorario'}.`,
     svg: renderSVGPattern("rotacion", { deg: deg, sentido: esHorario ? 'Horario' : 'Antihorario' }),
@@ -280,19 +345,20 @@ for (let i = 16; i <= 35; i++) {
 // MÓDULO 3: SECUENCIAS HORIZONTALES (36 al 50)
 for (let i = 36; i <= 50; i++) {
   const rawOptions = [
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="18" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/><path d="M 25 7 L 25 43 M 7 25 L 43 25 M 12 12 L 38 38 M 12 38 L 38 12" stroke="#0f172a" stroke-width="2"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="18" stroke="#0f172a" stroke-width="2" fill="#4f46e5"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="18" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/><line x1="25" y1="7" x2="25" y2="43" stroke="#0f172a" stroke-width="2"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/></svg>` }
+    { svgType: "sec", param: 0 },
+    { svgType: "sec", param: 1 },
+    { svgType: "sec", param: 2 },
+    { svgType: "sec", param: 3 }
   ];
 
   const balanced = getBalancedOptions(rawOptions, 0, i - 1);
 
   preguntas.push({
     id: i,
+    type: "svg",
     categoria: "Secuencias Horizontales",
     enunciado: `Escoja la figura que completa la secuencia gráfica horizontal en la casilla '?' (Ejercicio ${i}).`,
-    svg: renderSVGPattern("secuencia", { step: i - 35 }),
+    svg: renderSVGPattern("secuencia", {}),
     opciones: balanced.opciones,
     correcta: balanced.correcta,
     explicacion: "En las secuencias del libro (págs. 48-50), cada casillero añade un nuevo eje interno completando la estrella de 8 puntas[cite: 10, 11]."
@@ -302,16 +368,17 @@ for (let i = 36; i <= 50; i++) {
 // MÓDULO 4: MATRICES GRÁFICAS 3x3 (51 al 70)
 for (let i = 51; i <= 70; i++) {
   const rawOptions = [
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/><polygon points="25,18 16,33 34,33" fill="#4f46e5"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="18" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="#0f172a" stroke-width="2" fill="#4f46e5"/></svg>` }
+    { svgType: "mat", param: 0 },
+    { svgType: "mat", param: 1 },
+    { svgType: "mat", param: 2 },
+    { svgType: "mat", param: 3 }
   ];
 
   const balanced = getBalancedOptions(rawOptions, 0, i - 1);
 
   preguntas.push({
     id: i,
+    type: "svg",
     categoria: "Matrices Gráficas 3x3",
     enunciado: `Identifique la figura que reemplaza el signo de interrogación en la matriz (Ejercicio ${i}).`,
     svg: renderSVGPattern("matriz", {}),
@@ -324,16 +391,17 @@ for (let i = 51; i <= 70; i++) {
 // MÓDULO 5: SUPERPOSICIÓN DE FIGURAS (71 al 80)
 for (let i = 71; i <= 80; i++) {
   const rawOptions = [
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/><line x1="10" y1="10" x2="40" y2="40" stroke="#0f172a" stroke-width="2"/><line x1="40" y1="10" x2="10" y2="40" stroke="#0f172a" stroke-width="2"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><line x1="10" y1="25" x2="40" y2="25" stroke="#0f172a" stroke-width="2"/></svg>` }
+    { svgType: "sup", param: 0 },
+    { svgType: "sup", param: 1 },
+    { svgType: "sup", param: 2 },
+    { svgType: "sup", param: 3 }
   ];
 
   const balanced = getBalancedOptions(rawOptions, 0, i - 1);
 
   preguntas.push({
     id: i,
+    type: "svg",
     categoria: "Superposición de Figuras",
     enunciado: `Seleccione la figura resultante de superponer la columna 1 y columna 2 (Ejercicio ${i}).`,
     svg: renderSVGPattern("matriz", {}),
@@ -346,16 +414,17 @@ for (let i = 71; i <= 80; i++) {
 // MÓDULO 6: ANALOGÍAS ENTRE FIGURAS (81 al 90)
 for (let i = 81; i <= 90; i++) {
   const rawOptions = [
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="#0f172a" stroke-width="2" fill="#4f46e5"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="#0f172a" stroke-width="2" fill="#4f46e5"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="#0f172a" stroke-width="2" fill="#4f46e5"/></svg>` }
+    { svgType: "ana", param: 0 },
+    { svgType: "ana", param: 1 },
+    { svgType: "ana", param: 2 },
+    { svgType: "ana", param: 3 }
   ];
 
   const balanced = getBalancedOptions(rawOptions, 0, i - 1);
 
   preguntas.push({
     id: i,
+    type: "svg",
     categoria: "Analogías Figurativas",
     enunciado: `Indique la figura que completa la analogía A : B :: C : ? (Ejercicio ${i}).`,
     svg: renderSVGPattern("analogia", {}),
@@ -368,16 +437,17 @@ for (let i = 81; i <= 90; i++) {
 // MÓDULO 7: SECUENCIAS ANALÓGICAS (91 al 100)
 for (let i = 91; i <= 100; i++) {
   const rawOptions = [
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="16" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/><line x1="25" y1="9" x2="25" y2="41" stroke="#0f172a" stroke-width="2"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="16" stroke="#0f172a" stroke-width="2" fill="#4f46e5"/></svg>` },
-    { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,8 8,40 42,40" stroke="#0f172a" stroke-width="2" fill="#f8fafc"/></svg>` }
+    { svgType: "san", param: 0 },
+    { svgType: "san", param: 1 },
+    { svgType: "san", param: 2 },
+    { svgType: "san", param: 3 }
   ];
 
   const balanced = getBalancedOptions(rawOptions, 0, i - 1);
 
   preguntas.push({
     id: i,
+    type: "svg",
     categoria: "Secuencias Analógicas",
     enunciado: `Determine la figura que responde a la secuencia analógica (Ejercicio ${i}).`,
     svg: renderSVGPattern("secuencia", {}),
@@ -387,7 +457,7 @@ for (let i = 91; i <= 100; i++) {
   });
 }
 
-// ESTADO GLOBAL DE LA APLICACIÓN
+// ESTADO GLOBAL
 let actual = 0;
 let usuarioRespuestas = new Array(100).fill(null);
 let tiempoRestante = 3600;
@@ -403,11 +473,14 @@ const btnFinish = document.getElementById('btn-finish');
 const btnPrev = document.getElementById('btn-prev');
 const btnNext = document.getElementById('btn-next');
 const btnRestart = document.getElementById('btn-restart');
+const btnThemeToggle = document.getElementById('btn-theme-toggle');
 
 const quizControls = document.getElementById('quiz-header-controls');
 const progressContainer = document.getElementById('progress-container');
 const progressBar = document.getElementById('progress-bar');
 const badgeTotal = document.getElementById('badge-total');
+const questionsGrid = document.getElementById('questions-grid');
+const answeredCountTag = document.getElementById('answered-count');
 
 function switchView(view) {
   viewHome.classList.remove('active');
@@ -445,6 +518,27 @@ function startTimer() {
   }, 1000);
 }
 
+function renderSidebar() {
+  questionsGrid.innerHTML = '';
+  let respondidas = 0;
+
+  preguntas.forEach((_, idx) => {
+    const isAnswered = usuarioRespuestas[idx] !== null;
+    if (isAnswered) respondidas++;
+
+    const btn = document.createElement('button');
+    btn.className = `q-grid-btn ${idx === actual ? 'active-q' : ''} ${isAnswered ? 'answered' : ''}`;
+    btn.innerText = idx + 1;
+    btn.onclick = () => {
+      actual = idx;
+      renderQuestion();
+    };
+    questionsGrid.appendChild(btn);
+  });
+
+  answeredCountTag.innerText = `${respondidas} / 100`;
+}
+
 function renderQuestion() {
   const q = preguntas[actual];
   document.getElementById('q-number').innerText = `Pregunta ${actual + 1} de ${preguntas.length}`;
@@ -467,15 +561,25 @@ function renderQuestion() {
       usuarioRespuestas[actual] = idx;
       renderQuestion();
     };
+
+    let contentHTML = '';
+    if (q.type === 'text') {
+      contentHTML = op.html;
+    } else {
+      contentHTML = renderOptionSVG(op.svgType, op.param);
+    }
+
     btn.innerHTML = `
       <div class="opt-letter">${String.fromCharCode(65 + idx)}</div>
-      <div style="font-size: 0.95rem; font-weight: 500; display: flex; align-items: center;">${op.html}</div>
+      <div style="font-size: 0.95rem; font-weight: 500; display: flex; align-items: center;">${contentHTML}</div>
     `;
     grid.appendChild(btn);
   });
 
   btnPrev.disabled = actual === 0;
   btnNext.innerText = actual === preguntas.length - 1 ? 'Finalizar Examen' : 'Siguiente';
+
+  renderSidebar();
 }
 
 function finishExam() {
@@ -493,11 +597,23 @@ function finishExam() {
 
     const card = document.createElement('div');
     card.className = `review-card ${isOk ? 'correct' : 'incorrect'}`;
+    
+    let optAnswerText = '';
+    if (userAns !== null) {
+      const selectedOp = q.opciones[userAns];
+      optAnswerText = q.type === 'text' ? selectedOp.html : renderOptionSVG(selectedOp.svgType, selectedOp.param);
+    } else {
+      optAnswerText = 'Sin responder';
+    }
+
+    const correctOp = q.opciones[q.correcta];
+    const correctText = q.type === 'text' ? correctOp.html : renderOptionSVG(correctOp.svgType, correctOp.param);
+
     card.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: flex-start;">
         <div>
-          <span style="font-size: 0.75rem; color: #64748b;">Pregunta ${idx + 1} — ${q.categoria}</span>
-          <h4 style="font-size: 1rem; margin-top: 0.25rem; color: #0f172a;">${q.enunciado}</h4>
+          <span style="font-size: 0.75rem; color: var(--text-secondary);">Pregunta ${idx + 1} — ${q.categoria}</span>
+          <h4 style="font-size: 1rem; margin-top: 0.25rem;">${q.enunciado}</h4>
         </div>
         <span class="badge" style="background-color: ${isOk ? 'rgba(16,185,129,0.1)' : 'rgba(244,63,94,0.1)'}; color: ${isOk ? '#10b981' : '#f43f5e'}">
           ${isOk ? 'Correcta' : 'Incorrecta'}
@@ -506,9 +622,9 @@ function finishExam() {
       <div style="margin: 1rem 0; display: flex; justify-content: center; background: #0f172a; padding: 1rem; border-radius: 0.75rem;">
         ${q.svg}
       </div>
-      <div style="font-size: 0.85rem; color: #334155;">
-        <p><strong>Tu respuesta:</strong> ${userAns !== null ? String.fromCharCode(65 + userAns) : 'Sin responder'}</p>
-        <p style="color: #10b981;"><strong>Respuesta correcta:</strong> ${String.fromCharCode(65 + q.correcta)}</p>
+      <div style="font-size: 0.85rem; color: var(--text-primary);">
+        <p><strong>Tu respuesta:</strong> ${String.fromCharCode(65 + (userAns !== null ? userAns : 0))} — ${optAnswerText}</p>
+        <p style="color: #10b981;"><strong>Respuesta correcta:</strong> ${String.fromCharCode(65 + q.correcta)} — ${correctText}</p>
         <div class="explanation-box">
           <strong>Solucionario paso a paso:</strong> ${q.explicacion}
         </div>
@@ -527,6 +643,20 @@ function finishExam() {
   else if (puntaje >= 700) msg = "¡Buen trabajo! Estás muy cerca de la puntuación máxima.";
   document.getElementById('score-feedback').innerText = msg;
 }
+
+// TOGGLE DE TEMA CLARO / OSCURO
+btnThemeToggle.addEventListener('click', () => {
+  if (document.body.classList.contains('theme-light')) {
+    document.body.classList.remove('theme-light');
+    document.body.classList.add('theme-dark');
+    btnThemeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+  } else {
+    document.body.classList.remove('theme-dark');
+    document.body.classList.add('theme-light');
+    btnThemeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+  }
+  renderQuestion();
+});
 
 // LISTENERS
 btnStart.addEventListener('click', () => {

@@ -7,16 +7,16 @@
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="theme-light">
 
-  <!-- Header / Navbar -->
+  <!-- Header / Navbar con conmutador de tema -->
   <header class="app-header">
     <div class="header-content">
       <div class="brand">
         <div class="brand-icon"><i class="fa-solid fa-brain"></i></div>
         <div>
           <h1>Simulador Abstracto UNL</h1>
-          <span class="subtext">Libro Oficial CENES</span>
+          <span class="subtext">Banco Completo CENES</span>
         </div>
       </div>
 
@@ -25,6 +25,9 @@
           <i class="fa-regular fa-clock"></i>
           <span id="timer-display">60:00</span>
         </div>
+        <button id="btn-theme-toggle" class="btn btn-theme" title="Cambiar Tema">
+          <i class="fa-solid fa-moon"></i>
+        </button>
         <button id="btn-finish" class="btn btn-emerald">Finalizar Examen</button>
       </div>
 
@@ -44,7 +47,7 @@
           <span class="tag"><i class="fa-solid fa-graduation-cap"></i> Admisión UNL</span>
           <h2>Domina el <span>Razonamiento Abstracto</span></h2>
           <p>
-            Plataforma interactiva con 100 ejercicios extraídos de todos los capítulos del Libro de CENES: Conteo de figuras, Rotaciones, Secuencias, Matrices 3x3, Superposición y Analogías.
+            Plataforma interactiva con 100 ejercicios estructurados desde el Libro de CENES: Conteo de figuras, Rotaciones, Secuencias, Matrices 3x3, Superposición y Analogías.
           </p>
 
           <div class="stats-grid">
@@ -71,50 +74,67 @@
           <div class="topic-card">
             <i class="fa-solid fa-face-smile topic-icon color-indigo"></i>
             <h4>1. Conteo de Caras</h4>
-            <p>Discriminación visual detallada de rasgos.</p>
+            <p>16 rostros variados por muestra con distintos rasgos.</p>
           </div>
           <div class="topic-card">
             <i class="fa-solid fa-rotate topic-icon color-cyan"></i>
             <h4>2. Rotaciones</h4>
-            <p>Giros horarios/antihorarios de 45° a 1125°.</p>
+            <p>Giros horarios y antihorarios con figuras vectoriales.</p>
           </div>
           <div class="topic-card">
             <i class="fa-solid fa-table-cells-3x3 topic-icon color-emerald"></i>
             <h4>3. Matrices 3x3</h4>
-            <p>Patrones de análisis por filas y columnas.</p>
+            <p>Patrones de combinación lógica por filas y columnas.</p>
           </div>
           <div class="topic-card">
             <i class="fa-solid fa-layer-group topic-icon color-amber"></i>
             <h4>4. Superposición</h4>
-            <p>Suma y resta de trazos y formas geométricas.</p>
+            <p>Suma y resta gráfica de trazos simétricos.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- VISTA 2: SIMULADOR EN VIVO -->
+    <!-- VISTA 2: SIMULADOR CON PANEL LATERAL DE NAVEGACIÓN -->
     <section id="view-quiz" class="view-section">
-      <div class="quiz-card">
-        <div class="quiz-header">
-          <div>
-            <span id="q-number" class="q-number">Pregunta 1 de 100</span>
-            <h3 id="q-statement" class="q-statement">Cargando enunciado...</h3>
+      <div class="quiz-layout">
+        
+        <!-- Panel Lateral de Selección de Preguntas (1 a 100) -->
+        <aside class="quiz-sidebar">
+          <div class="sidebar-header">
+            <h4>Navegación de Ítems</h4>
+            <span id="answered-count" class="badge-sub">0 / 100</span>
           </div>
-          <span id="q-category" class="category-badge">Categoría</span>
+          <p class="sidebar-info">Haz clic en cualquier número para responderlo libremente:</p>
+          <div id="questions-grid" class="questions-grid">
+            <!-- Los 100 botones de navegación se generan dinámicamente desde JS -->
+          </div>
+        </aside>
+
+        <!-- Área Principal de la Pregunta -->
+        <div class="quiz-card">
+          <div class="quiz-header">
+            <div>
+              <span id="q-number" class="q-number">Pregunta 1 de 100</span>
+              <h3 id="q-statement" class="q-statement">Cargando enunciado...</h3>
+            </div>
+            <span id="q-category" class="category-badge">Categoría</span>
+          </div>
+
+          <div id="svg-viewport" class="svg-viewport"></div>
+
+          <div id="options-grid" class="options-grid"></div>
+
+          <div class="quiz-footer">
+            <button id="btn-prev" class="btn btn-secondary">
+              <i class="fa-solid fa-chevron-left"></i> Anterior
+            </button>
+            <button id="btn-next" class="btn btn-primary">
+              Siguiente <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
 
-        <div id="svg-viewport" class="svg-viewport"></div>
-
-        <div id="options-grid" class="options-grid"></div>
-
-        <div class="quiz-footer">
-          <button id="btn-prev" class="btn btn-secondary">
-            <i class="fa-solid fa-chevron-left"></i> Anterior
-          </button>
-          <button id="btn-next" class="btn btn-primary">
-            Siguiente <i class="fa-solid fa-chevron-right"></i>
-          </button>
-        </div>
       </div>
     </section>
 
@@ -140,7 +160,7 @@
       </div>
 
       <div class="review-section">
-        <h3 style="color: #0f172a;">Solucionario y Retroalimentación</h3>
+        <h3>Solucionario y Retroalimentación</h3>
         <div id="review-container" class="review-container"></div>
         <button id="btn-restart" class="btn btn-primary btn-lg" style="margin-top: 1.5rem;">
           Volver a Intentar
@@ -151,7 +171,7 @@
   </main>
 
   <footer class="app-footer">
-    <p>Simulador de Razonamiento Abstracto — Basado en el Libro de CENES (Págs. 39-71)</p>
+    <p>Simulador de Razonamiento Abstracto — Basado en el Libro Oficial de CENES (Págs. 39-71)</p>
   </footer>
 
   <script src="index.js"></script>
