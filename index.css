@@ -1,4 +1,4 @@
-/* VARIABLES CONMUTABLES DE ALTO CONTRASTE (CLARO Y OSCURO) */
+/* VARIABLES CONMUTABLES */
 body.theme-light {
   --bg-main: #f8fafc;
   --bg-card: #ffffff;
@@ -12,7 +12,7 @@ body.theme-light {
   --rose-color: #f43f5e;
   --opt-bg: #ffffff;
   --opt-border: #94a3b8;
-  --opt-stroke: #0f172a; /* Trazo oscuro perfectamente visible en botones claros */
+  --opt-stroke: #0f172a;
 }
 
 body.theme-dark {
@@ -28,7 +28,7 @@ body.theme-dark {
   --rose-color: #f43f5e;
   --opt-bg: #1e293b;
   --opt-border: #475569;
-  --opt-stroke: #f8fafc; /* Trazo claro visible en botones oscuros */
+  --opt-stroke: #f8fafc;
 }
 
 * {
@@ -454,7 +454,7 @@ body {
   border-color: var(--primary-color);
 }
 
-/* Botones Generales */
+/* Botones */
 .btn {
   padding: 0.75rem 1.25rem;
   border-radius: 0.75rem;

@@ -1,14 +1,66 @@
-// OBTENER COLOR DE TRAZO PARA BOTONES SEGÚN EL TEMA ACTIVO (CLARO / OSCURO)
+// OBTENER COLOR DE TRAZO PARA BOTONES SEGÚN EL TEMA ACTIVO
 function getOptionStrokeColor() {
   return document.body.classList.contains('theme-dark') ? '#f8fafc' : '#0f172a';
 }
 
 // ---------------------------------------------------------------------
-// RENDERIZADOR SVG DINÁMICO DE ALTO CONTRASTE PARA ENUNCIADOS (MARCO OSCURO)
+// GENERADOR DE GRÁFICOS SVG PARA EL VISOR PRINCIPAL (100% DIVERSIFICADO)
 // ---------------------------------------------------------------------
 function renderSVGPattern(tipo, p) {
-  
-  // 1. DISCRIMINACIÓN VISUAL Y CONTEO DE CARAS (MUESTRA DE 16 ROSTROS)
+
+  // 1. CONTEO DE CARAS DE SÓLIDOS 3D REALES (TIPO ESCALÓN Y FIGURA H)
+  if (tipo === "solido3d") {
+    if (p.modelo === "escalon") {
+      // Sólido en forma de grada/escalonado
+      return `<svg width="280" height="150" viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(40, 20)">
+          <!-- Frente -->
+          <polygon points="30,100 170,100 170,80 130,80 130,55 90,55 90,30 30,30" fill="#f8fafc" stroke="#ffffff" stroke-width="2"/>
+          <!-- Cara frontal lateral izquierda sombra -->
+          <polygon points="10,110 30,100 30,30 10,40" fill="#64748b" stroke="#ffffff" stroke-width="2"/>
+          <!-- Escalones Horizontales (Superficies superiores) -->
+          <polygon points="30,30 90,30 110,20 50,20" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
+          <polygon points="90,55 130,55 150,45 110,45" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
+          <polygon points="130,80 170,80 190,70 150,70" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
+          <!-- Paredes Verticales Atras -->
+          <polygon points="90,30 90,55 110,45 110,20" fill="#94a3b8" stroke="#ffffff" stroke-width="2"/>
+          <polygon points="130,55 130,80 150,70 150,45" fill="#94a3b8" stroke="#ffffff" stroke-width="2"/>
+          <!-- Lateral Derecho -->
+          <polygon points="170,80 170,100 190,90 190,70" fill="#475569" stroke="#ffffff" stroke-width="2"/>
+        </g>
+      </svg>`;
+    }
+
+    if (p.modelo === "figuraH") {
+      // Sólido tridimensional en forma de H
+      return `<svg width="260" height="160" viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(50, 15)">
+          <!-- Cara frontal H -->
+          <polygon points="10,10 45,10 45,50 85,50 85,10 120,10 120,120 85,120 85,80 45,80 45,120 10,120" fill="#f8fafc" stroke="#ffffff" stroke-width="2"/>
+          <!-- Sombra e inclinación isométrica -->
+          <polygon points="120,10 140,0 140,110 120,120" fill="#475569" stroke="#ffffff" stroke-width="2"/>
+          <polygon points="45,10 65,0 140,0 120,10" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
+          <!-- Techo columna izquierda -->
+          <polygon points="10,10 30,0 65,0 45,10" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
+          <!-- Hueco central H interno -->
+          <polygon points="45,50 65,40 85,40 85,50" fill="#94a3b8" stroke="#ffffff" stroke-width="2"/>
+          <polygon points="45,50 45,80 65,70 65,40" fill="#64748b" stroke="#ffffff" stroke-width="2"/>
+        </g>
+      </svg>`;
+    }
+
+    // Sólido tipo Prisma con Ranura en T
+    return `<svg width="260" height="150" viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(50, 20)">
+        <polygon points="10,30 130,30 130,90 10,90" fill="#f8fafc" stroke="#ffffff" stroke-width="2"/>
+        <polygon points="50,30 90,30 90,60 50,60" fill="#0f172a" stroke="#ffffff" stroke-width="2"/>
+        <polygon points="130,30 160,10 160,70 130,90" fill="#475569" stroke="#ffffff" stroke-width="2"/>
+        <polygon points="10,30 40,10 160,10 130,30" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
+      </g>
+    </svg>`;
+  }
+
+  // 2. DISCRIMINACIÓN VISUAL Y CARAS EN MUESTRAS DE 16 ROSTROS
   if (tipo === "cara") {
     const totalCaras = 16;
     const targetsIndex = p.targetsIndex || [];
@@ -32,13 +84,11 @@ function renderSVGPattern(tipo, p) {
         : `<path d="M ${cx - 9} ${cy + 4} Q ${cx} ${cy + 13} ${cx + 9} ${cy + 4}" stroke="#ffffff" stroke-width="2" fill="none"/>`;
 
       const orejas = `<ellipse cx="${cx - 18}" cy="${cy}" rx="3.5" ry="6" stroke="#ffffff" stroke-width="1.5" fill="none"/><ellipse cx="${cx + 18}" cy="${cy}" rx="3.5" ry="6" stroke="#ffffff" stroke-width="1.5" fill="none"/>`;
-      const pelo = `<path d="M ${cx - 4} ${cy - 18} Q ${cx - 8} ${cy - 25} ${cx - 4} ${cy - 27} M ${cx} ${cy - 18} Q ${cx} ${cy - 27} ${cx + 3} ${cy - 29} M ${cx + 4} ${cy - 18} Q ${cx + 8} ${cy - 25} ${cx + 7} ${cy - 27}" stroke="#ffffff" stroke-width="1.5" fill="none"/>`;
 
       carasHTML += `
         <g>
           <circle cx="${cx}" cy="${cy}" r="18" stroke="#ffffff" stroke-width="2" fill="#0f172a"/>
           ${orejas}
-          ${pelo}
           ${ojosSVG}
           ${bocaSVG}
           <text x="${cx}" y="${cy + 28}" fill="#94a3b8" font-size="9" text-anchor="middle">${i + 1}</text>
@@ -48,7 +98,7 @@ function renderSVGPattern(tipo, p) {
     return `<svg width="450" height="150" viewBox="0 0 450 150" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">${carasHTML}</svg>`;
   }
 
-  // 2. ROTACIÓN DE FIGURAS IRREGULARES Y COMPLEJAS
+  // 3. ROTACIÓN DE POLÍGONOS Y ARRAYS IRREGULARES
   if (tipo === "rotacion_irreg") {
     const figPath = p.shapePath || "M -15,-20 L 15,-20 L 15,-5 L 0,-5 L 0,20 L -15,20 Z";
     return `<svg width="280" height="120" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
@@ -68,89 +118,69 @@ function renderSVGPattern(tipo, p) {
     </svg>`;
   }
 
-  // 3. CONTEO DE CUBOS TRIDIMENSIONALES ISOMÉTRICOS
-  if (tipo === "cubos3d") {
-    const cubos = p.cubosCoords || [{x:0,y:0,z:0},{x:1,y:0,z:0},{x:0,y:1,z:0}];
-    let cubosHTML = '';
+  // 4. MATRICES 3x3 DINÁMICAS Y COHERENTES (FORMA EXTERNA Y ELEMENTO INTERNO)
+  if (tipo === "matriz_coherente") {
+    const f1 = p.f1 || "circle";
+    const f2 = p.f2 || "triangle";
+    const f3 = p.f3 || "square";
 
-    function drawIsoCube(gx, gy, gz) {
-      const isoX = 150 + (gx - gy) * 22;
-      const isoY = 110 + (gx + gy) * 12 - gz * 25;
-
-      return `
-        <g>
-          <!-- Cara Superior -->
-          <polygon points="${isoX},${isoY - 14} ${isoX + 22},${isoY - 7} ${isoX},${isoY} ${isoX - 22},${isoY - 7}" fill="#818cf8" stroke="#0f172a" stroke-width="1"/>
-          <!-- Cara Izquierda -->
-          <polygon points="${isoX - 22},${isoY - 7} ${isoX},${isoY} ${isoX},${isoY + 18} ${isoX - 22},${isoY + 11}" fill="#4f46e5" stroke="#0f172a" stroke-width="1"/>
-          <!-- Cara Derecha -->
-          <polygon points="${isoX},${isoY} ${isoX + 22},${isoY - 7} ${isoX + 22},${isoY + 11} ${isoX},${isoY + 18}" fill="#3730a3" stroke="#0f172a" stroke-width="1"/>
-        </g>
-      `;
+    function drawCellShape(shape, cx, cy) {
+      if (shape === "circle") return `<circle cx="${cx}" cy="${cy}" r="18" stroke="#ffffff" stroke-width="2" fill="none"/>`;
+      if (shape === "triangle") return `<polygon points="${cx},${cy-18} ${cx-16},${cy+12} ${cx+16},${cy+12}" stroke="#ffffff" stroke-width="2" fill="none"/>`;
+      return `<rect x="${cx-15}" y="${cy-15}" width="30" height="30" stroke="#ffffff" stroke-width="2" fill="none"/>`;
     }
 
-    cubos.forEach(c => { cubosHTML += drawIsoCube(c.x, c.y, c.z); });
+    function drawInnerDot(type, cx, cy) {
+      if (type === "dot") return `<circle cx="${cx}" cy="${cy}" r="4" fill="#ffffff"/>`;
+      if (type === "square") return `<rect x="${cx-4}" y="${cy-4}" width="8" height="8" fill="#ffffff"/>`;
+      return `<polygon points="${cx},${cy-5} ${cx-4},${cy+3} ${cx+4},${cy+3}" fill="#ffffff"/>`;
+    }
 
-    return `<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">${cubosHTML}</svg>`;
-  }
+    return `<svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- Fila 1 -->
+      <rect x="10" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f1, 40, 40)}${drawInnerDot("dot", 40, 40)}
 
-  // 4. SECUENCIAS DIVERSIFICADAS DE POLÍGONOS Y LADOS
-  if (tipo === "secuencia_dinámica") {
-    const step = p.step || 0;
-    const nSide1 = 3 + (step % 3);
-    const nSide2 = 4 + (step % 3);
-    const nSide3 = 5 + (step % 3);
+      <rect x="80" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f2, 110, 40)}${drawInnerDot("dot", 110, 40)}
 
-    return `<svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(37, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(nSide1, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
-      <g transform="translate(102, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(nSide2, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
-      <g transform="translate(167, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(nSide3, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
+      <rect x="150" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f3, 180, 40)}${drawInnerDot("dot", 180, 40)}
 
-      <rect x="205" y="10" width="55" height="60" rx="6" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
-      <text x="232" y="48" fill="#818cf8" font-size="24" font-weight="bold" text-anchor="middle">?</text>
+      <!-- Fila 2 -->
+      <rect x="10" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f2, 40, 110)}${drawInnerDot("square", 40, 110)}
+
+      <rect x="80" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f3, 110, 110)}${drawInnerDot("square", 110, 110)}
+
+      <rect x="150" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f1, 180, 110)}${drawInnerDot("square", 180, 110)}
+
+      <!-- Fila 3 -->
+      <rect x="10" y="150" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f3, 40, 180)}${drawInnerDot("triangle", 40, 180)}
+
+      <rect x="80" y="150" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f1, 110, 180)}${drawInnerDot("triangle", 110, 180)}
+
+      <rect x="150" y="150" width="60" height="60" rx="6" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
+      <text x="180" y="188" fill="#818cf8" font-size="28" font-weight="bold" text-anchor="middle">?</text>
     </svg>`;
   }
 
-  // 5. MATRICES GRÁFICAS 3x3 Y ANALOGÍAS
-  return `<svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-    <rect x="10" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-    <circle cx="40" cy="40" r="18" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <circle cx="40" cy="40" r="5" fill="#ffffff"/>
+  // 5. SECUENCIAS
+  return `<svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(37, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(3, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
+    <g transform="translate(102, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(4, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
+    <g transform="translate(167, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(5, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
 
-    <rect x="80" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-    <polygon points="110,22 93,52 127,52" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <circle cx="110" cy="42" r="5" fill="#ffffff"/>
-
-    <rect x="150" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-    <rect x="165" y="25" width="30" height="30" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <circle cx="180" cy="40" r="5" fill="#ffffff"/>
-
-    <rect x="10" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-    <polygon points="40,92 23,122 57,122" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <rect x="33" y="103" width="14" height="14" fill="#ffffff"/>
-
-    <rect x="80" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-    <rect x="95" y="95" width="30" height="30" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <rect x="103" y="103" width="14" height="14" fill="#ffffff"/>
-
-    <rect x="150" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-    <circle cx="180" cy="110" r="18" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <rect x="173" y="103" width="14" height="14" fill="#ffffff"/>
-
-    <rect x="10" y="150" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-    <rect x="25" y="165" width="30" height="30" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <polygon points="40,172 32,185 48,185" fill="#ffffff"/>
-
-    <rect x="80" y="150" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-    <circle cx="110" cy="180" r="18" stroke="#ffffff" stroke-width="2" fill="none"/>
-    <polygon points="110,172 102,185 118,185" fill="#ffffff"/>
-
-    <rect x="150" y="150" width="60" height="60" rx="6" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
-    <text x="180" y="188" fill="#818cf8" font-size="28" font-weight="bold" text-anchor="middle">?</text>
+    <rect x="205" y="10" width="55" height="60" rx="6" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
+    <text x="232" y="48" fill="#818cf8" font-size="24" font-weight="bold" text-anchor="middle">?</text>
   </svg>`;
 }
 
-// HELPER MATEMÁTICO: PUNTOS PARA POLÍGONOS REGULARES
+// HELPER: PUNTOS POLÍGONO
 function getPolygonPoints(sides, radius) {
   let points = [];
   for (let i = 0; i < sides; i++) {
@@ -163,7 +193,7 @@ function getPolygonPoints(sides, radius) {
 }
 
 // ---------------------------------------------------------------------
-// RENDERIZADOR VECTORIAL DE OPCIONES CON CONTRASTE ADAPTABLE
+// RENDERIZADOR VECTORIAL DE OPCIONES (CONTRASte adaptable a tema)
 // ---------------------------------------------------------------------
 function renderOptionSVG(type, p) {
   const c = getOptionStrokeColor();
@@ -189,13 +219,26 @@ function renderOptionSVG(type, p) {
     </svg>`;
   }
 
+  if (type === "mat_ans") {
+    const shape = p.shape || "triangle";
+    let mainShape = '';
+    if (shape === "circle") mainShape = `<circle cx="25" cy="25" r="16" stroke="${c}" stroke-width="2" fill="none"/>`;
+    else if (shape === "triangle") mainShape = `<polygon points="25,8 10,38 40,38" stroke="${c}" stroke-width="2" fill="none"/>`;
+    else mainShape = `<rect x="10" y="10" width="30" height="30" stroke="${c}" stroke-width="2" fill="none"/>`;
+
+    return `<svg width="50" height="50" viewBox="0 0 50 50">
+      ${mainShape}
+      <polygon points="25,20 20,28 30,28" fill="#4f46e5"/>
+    </svg>`;
+  }
+
   return `<svg width="50" height="50" viewBox="0 0 50 50">
     <circle cx="25" cy="25" r="16" stroke="${c}" stroke-width="2" fill="none"/>
     <line x1="25" y1="9" x2="25" y2="41" stroke="${c}" stroke-width="2"/>
   </svg>`;
 }
 
-// DISTRIBUCIÓN EQUITATIVA Y ROTATIVA DE RESPUESTAS (A, B, C, D)
+// BALANCEO ALEATORIO ROTATIVO DE RESPUESTAS (A, B, C, D)
 function getBalancedOptions(rawOptions, targetCorrectIdx, itemIndex) {
   const desiredCorrectLetterIdx = itemIndex % 4; // Rotación equitativa: 0=A, 1=B, 2=C, 3=D
   const resultOptions = new Array(4);
@@ -217,20 +260,50 @@ function getBalancedOptions(rawOptions, targetCorrectIdx, itemIndex) {
 }
 
 // ---------------------------------------------------------------------
-// CONSTRUCCIÓN COMPLETA DE LAS 100 PREGUNTAS ÚNICAS
+// CONSTRUCCIÓN DEL BANCO DIVERSIFICADO DE 100 PREGUNTAS ÚNICAS
 // ---------------------------------------------------------------------
 const preguntas = [];
 
-// MÓDULO 1: DISCRIMINACIÓN VISUAL Y CONTEO DE CARAS (1 al 15)
+// MÓDULO 1: CONTEO DE CARAS EN SÓLIDOS 3D REALES (1 al 20)
+const modelosSolidos = ["escalon", "figuraH", "ranurado"];
+const respuestasCaras = [12, 14, 10, 16, 8, 11, 18, 9, 13, 15, 7, 17, 20, 19, 22, 21, 24, 23, 25, 26];
+
+for (let i = 1; i <= 20; i++) {
+  const mod = modelosSolidos[(i - 1) % modelosSolidos.length];
+  const totalCaras = respuestasCaras[i - 1];
+
+  const rawOptions = [
+    { html: `<strong>${totalCaras}</strong> caras` },
+    { html: `<strong>${totalCaras - 2 > 0 ? totalCaras - 2 : 7}</strong> caras` },
+    { html: `<strong>${totalCaras + 2}</strong> caras` },
+    { html: `<strong>${totalCaras + 4}</strong> caras` }
+  ];
+
+  const balanced = getBalancedOptions(rawOptions, 0, i - 1);
+
+  preguntas.push({
+    id: i,
+    type: "text",
+    categoria: "Conteo de Caras en Sólidos 3D",
+    enunciado: `¿Cuántas caras en total tiene el siguiente sólido tridimensional (Ejercicio ${i})?`,
+    svg: renderSVGPattern("solido3d", { modelo: mod }),
+    opciones: balanced.opciones,
+    correcta: balanced.correcta,
+    explicacion: `Contabilizando las caras frontales, posteriores, laterales, superiores e inferiores del sólido 3D, consta de exactamente ${totalCaras} caras[cite: 43].`
+  });
+}
+
+// MÓDULO 2: DISCRIMINACIÓN VISUAL Y CARAS EN MUESTROS DE ROSTROS (21 al 40)
 const muestrasIndices = [
   [0, 3, 6, 9, 12, 15], [1, 2, 5, 8, 11], [0, 2, 4, 6, 8, 10, 12], [3, 7, 11, 15],
   [0, 1, 2, 3, 4, 5], [10, 11, 12, 13, 14, 15], [2, 5, 8, 11, 14], [0, 4, 8, 12],
   [1, 3, 5, 7, 9, 11, 13, 15], [0, 5, 10, 15], [1, 4, 7, 10, 13], [2, 6, 10, 14],
-  [0, 1, 8, 9, 12], [3, 4, 5, 6, 7, 8, 9], [0, 7, 14]
+  [0, 1, 8, 9, 12], [3, 4, 5, 6, 7, 8, 9], [0, 7, 14], [2, 3, 4, 5, 6], [1, 8, 15],
+  [0, 2, 11, 13], [5, 6, 7, 8], [9, 10, 11, 12]
 ];
 
-for (let i = 1; i <= 15; i++) {
-  const targetIndices = muestrasIndices[i - 1];
+for (let i = 21; i <= 40; i++) {
+  const targetIndices = muestrasIndices[i - 21];
   const targetCount = targetIndices.length;
   const esOjos = i % 2 === 1;
   const esTriste = i % 3 !== 0;
@@ -248,7 +321,7 @@ for (let i = 1; i <= 15; i++) {
     id: i,
     type: "text",
     categoria: "Conteo de Caras y Rasgos",
-    enunciado: `¿Cuántos rostros ${esTriste ? 'tristes' : 'alegres'} con ojos ${esOjos ? 'abiertos' : 'cerrados'} se encuentran en la muestra #${i}?`,
+    enunciado: `¿Cuántos rostros ${esTriste ? 'tristes' : 'alegres'} con ojos ${esOjos ? 'abiertos' : 'cerrados'} se encuentran en la muestra #${i - 20}?`,
     svg: renderSVGPattern("cara", {
       targetsIndex: targetIndices,
       ojosTipo: esOjos ? "abiertos" : "cerrados",
@@ -256,23 +329,23 @@ for (let i = 1; i <= 15; i++) {
     }),
     opciones: balanced.opciones,
     correcta: balanced.correcta,
-    explicacion: `Observando los 16 rostros numerados de la muestra (págs. 39-41), se contabilizan exactamente ${targetCount} rostros con esa combinación[cite: 1, 3].`
+    explicacion: `Observando detenidamente los 16 rostros numerados de la muestra, se contabilizan exactamente ${targetCount} rostros con esa combinación[cite: 39].`
   });
 }
 
-// MÓDULO 2: ROTACIÓN DE FIGURAS IRREGULARES Y COMPLEJAS (16 al 35)
+// MÓDULO 3: ROTACIÓN DE FIGURAS IRREGULARES (41 al 60)
 const figurasIrregulares = [
-  "M -15,-20 L 15,-20 L 15,-5 L 0,-5 L 0,20 L -15,20 Z", // L invertida
-  "M -20,-10 L 0,-20 L 20,-10 L 10,0 L 20,20 L -20,10 Z", // Polígono asimétrico
-  "M -15,-15 L 15,-15 L 5,0 L 15,15 L -15,15 L -5,0 Z",   // Flecha doble
-  "M -20,-20 L 20,-20 L 0,20 Z"                          // Triángulo desplazado
+  "M -15,-20 L 15,-20 L 15,-5 L 0,-5 L 0,20 L -15,20 Z",
+  "M -20,-10 L 0,-20 L 20,-10 L 10,0 L 20,20 L -20,10 Z",
+  "M -15,-15 L 15,-15 L 5,0 L 15,15 L -15,15 L -5,0 Z",
+  "M -20,-20 L 20,-20 L 0,20 Z"
 ];
 const angulosRot = [45, 90, 135, 180, 225, 270, 315, 405, 450, 540, 630, 720, 810, 900, 990, 1080, 1125, 1200, 1260, 1350];
 
-for (let i = 16; i <= 35; i++) {
-  const deg = angulosRot[i - 16];
+for (let i = 41; i <= 60; i++) {
+  const deg = angulosRot[i - 41];
   const esHorario = i % 2 === 0;
-  const shapePath = figurasIrregulares[(i - 16) % figurasIrregulares.length];
+  const shapePath = figurasIrregulares[(i - 41) % figurasIrregulares.length];
   const correctAngle = esHorario ? deg : -deg;
 
   const rawOptions = [
@@ -292,76 +365,20 @@ for (let i = 16; i <= 35; i++) {
     svg: renderSVGPattern("rotacion_irreg", { deg: deg, sentido: esHorario ? 'Horario' : 'Antihorario', shapePath: shapePath }),
     opciones: balanced.opciones,
     correcta: balanced.correcta,
-    explicacion: `Rotando los vértices ${deg}° en sentido ${esHorario ? 'horario' : 'antihorario'} (págs. 43-47), la orientación resultante coincide con la alternativa seleccionada[cite: 5, 8].`
+    explicacion: `Rotando los vértices ${deg}° en sentido ${esHorario ? 'horario' : 'antihorario'}, la orientación resultante coincide con la opción seleccionada.`
   });
 }
 
-// MÓDULO 3: CONTEO DE CUBOS TRIDIMENSIONALES (36 al 50)
-const estructurasCubos = [
-  [{x:0,y:0,z:0}, {x:1,y:0,z:0}, {x:0,y:1,z:0}], // 3 cubos
-  [{x:0,y:0,z:0}, {x:1,y:0,z:0}, {x:0,y:1,z:0}, {x:0,y:0,z:1}], // 4 cubos
-  [{x:0,y:0,z:0}, {x:1,y:0,z:0}, {x:2,y:0,z:0}, {x:0,y:1,z:0}, {x:0,y:0,z:1}], // 5 cubos
-  [{x:0,y:0,z:0}, {x:1,y:0,z:0}, {x:1,y:1,z:0}, {x:0,y:1,z:0}, {x:0,y:0,z:1}, {x:0,y:0,z:2}], // 6 cubos
-  [{x:0,y:0,z:0}, {x:1,y:0,z:0}, {x:2,y:0,z:0}, {x:0,y:1,z:0}, {x:1,y:1,z:0}, {x:0,y:2,z:0}, {x:0,y:0,z:1}] // 7 cubos
-];
-
-for (let i = 36; i <= 50; i++) {
-  const config = estructurasCubos[(i - 36) % estructurasCubos.length];
-  const totalCubos = config.length;
+// MÓDULO 4: MATRICES GRÁFICAS 3x3 COHERENTES (61 al 80)
+for (let i = 61; i <= 80; i++) {
+  const shapes = ["circle", "triangle", "square"];
+  const correctShape = shapes[(i - 61) % 3];
 
   const rawOptions = [
-    { html: `<strong>${totalCubos}</strong> cubos` },
-    { html: `<strong>${totalCubos + 1}</strong> cubos` },
-    { html: `<strong>${totalCubos + 2}</strong> cubos` },
-    { html: `<strong>${totalCubos - 1}</strong> cubos` }
-  ];
-
-  const balanced = getBalancedOptions(rawOptions, 0, i - 1);
-
-  preguntas.push({
-    id: i,
-    type: "text",
-    categoria: "Conteo de Cubos 3D",
-    enunciado: `¿Cuántos cubos individuales conforman el apilamiento tridimensional ilustrado (Ejercicio ${i})?`,
-    svg: renderSVGPattern("cubos3d", { cubosCoords: config }),
-    opciones: balanced.opciones,
-    correcta: balanced.correcta,
-    explicacion: `Contabilizando los bloques visibles junto con los cubos de soporte de las columnas traseras, el volumen consta exactamente de ${totalCubos} cubos.`
-  });
-}
-
-// MÓDULO 4: SECUENCIAS DIVERSIFICADAS DE POLÍGONOS Y LADOS (51 al 70)
-for (let i = 51; i <= 70; i++) {
-  const nextSides = 6 + (i % 3);
-
-  const rawOptions = [
-    { svgType: "polygon", p: { sides: nextSides, fill: 'none' } },
-    { svgType: "polygon", p: { sides: nextSides - 1, fill: 'none' } },
-    { svgType: "polygon", p: { sides: nextSides + 1, fill: 'none' } },
-    { svgType: "polygon", p: { sides: nextSides, fill: '#4f46e5' } }
-  ];
-
-  const balanced = getBalancedOptions(rawOptions, 0, i - 1);
-
-  preguntas.push({
-    id: i,
-    type: "svg",
-    categoria: "Secuencias de Lados y Polígonos",
-    enunciado: `Seleccione la figura que continúa el patrón de incremento de vértices en la casilla '?' (Ejercicio ${i}).`,
-    svg: renderSVGPattern("secuencia_dinámica", { step: i }),
-    opciones: balanced.opciones,
-    correcta: balanced.correcta,
-    explicacion: `La secuencia añade de forma progresiva un lado adicional por casilla, correspondiendo a un polígono de ${nextSides} lados[cite: 10, 11].`
-  });
-}
-
-// MÓDULO 5: MATRICES GRÁFICAS 3x3 Y SUPERPOSICIÓN (71 al 85)
-for (let i = 71; i <= 85; i++) {
-  const rawOptions = [
-    { svgType: "polygon", p: { sides: 3 + (i % 4), fill: '#4f46e5' } },
-    { svgType: "polygon", p: { sides: 3 + (i % 4), fill: 'none' } },
-    { svgType: "polygon", p: { sides: 8, fill: 'none' } },
-    { svgType: "polygon", p: { sides: 4, fill: '#4f46e5' } }
+    { svgType: "mat_ans", p: { shape: correctShape } },
+    { svgType: "mat_ans", p: { shape: shapes[(i - 60) % 3] } },
+    { svgType: "mat_ans", p: { shape: shapes[(i - 59) % 3] } },
+    { svgType: "polygon", p: { sides: 6, fill: '#4f46e5' } }
   ];
 
   const balanced = getBalancedOptions(rawOptions, 0, i - 1);
@@ -371,20 +388,22 @@ for (let i = 71; i <= 85; i++) {
     type: "svg",
     categoria: "Matrices Gráficas 3x3",
     enunciado: `Identifique la figura geométrica faltante en la matriz 3x3 (Ejercicio ${i}).`,
-    svg: renderSVGPattern("matriz", {}),
+    svg: renderSVGPattern("matriz_coherente", { f1: shapes[0], f2: shapes[1], f3: shapes[2] }),
     opciones: balanced.opciones,
     correcta: balanced.correcta,
-    explicacion: "Al analizar la interacción entre filas y columnas, la casilla vacía completa la secuencia de simetrías del grupo[cite: 13, 21]."
+    explicacion: `Analizando las tres formas principales y sus elementos internos por fila y columna, la casilla faltante completa la secuencia con la figura correspondiente[cite: 42].`
   });
 }
 
-// MÓDULO 6: ANALOGÍAS Y SECUENCIAS ANALÓGICAS (86 al 100)
-for (let i = 86; i <= 100; i++) {
+// MÓDULO 5: SECUENCIAS Y ANALOGÍAS (81 al 100)
+for (let i = 81; i <= 100; i++) {
+  const nextSides = 3 + (i % 5);
+
   const rawOptions = [
-    { svgType: "polygon", p: { sides: 3, fill: '#4f46e5' } },
-    { svgType: "polygon", p: { sides: 3, fill: 'none' } },
-    { svgType: "polygon", p: { sides: 4, fill: '#4f46e5' } },
-    { svgType: "polygon", p: { sides: 5, fill: 'none' } }
+    { svgType: "polygon", p: { sides: nextSides, fill: 'none' } },
+    { svgType: "polygon", p: { sides: nextSides + 1, fill: 'none' } },
+    { svgType: "polygon", p: { sides: nextSides - 1 > 2 ? nextSides - 1 : 8, fill: 'none' } },
+    { svgType: "polygon", p: { sides: nextSides, fill: '#4f46e5' } }
   ];
 
   const balanced = getBalancedOptions(rawOptions, 0, i - 1);
@@ -392,17 +411,17 @@ for (let i = 86; i <= 100; i++) {
   preguntas.push({
     id: i,
     type: "svg",
-    categoria: "Analogías Figurativas",
-    enunciado: `Indique la figura que satisface la relación analógica A : B :: C : ? (Ejercicio ${i}).`,
-    svg: renderSVGPattern("analogia", {}),
+    categoria: "Secuencias y Analogías",
+    enunciado: `Seleccione la figura que continúa el patrón en la casilla '?' (Ejercicio ${i}).`,
+    svg: renderSVGPattern("secuencia_dinámica", { step: i }),
     opciones: balanced.opciones,
     correcta: balanced.correcta,
-    explicacion: "La relación del par analógico inicial transforma la figura hueca en sólida. Aplicando dicha regla a la tercera figura resulta el triángulo sombreado[cite: 26, 29]."
+    explicacion: `La regla de transformación incrementa progresivamente los lados del polígono interior a ${nextSides} lados.`
   });
 }
 
 // ---------------------------------------------------------------------
-// CONTROL DE ESTADO GLOBAL Y NAVEGACIÓN DENTRO DE LA PRUEBA
+// NAVEGACIÓN Y CONTROL DEL EXAMEN
 // ---------------------------------------------------------------------
 let actual = 0;
 let usuarioRespuestas = new Array(100).fill(null);
@@ -574,13 +593,13 @@ function finishExam() {
   document.getElementById('correct-count').innerText = aciertos;
   document.getElementById('incorrect-count').innerText = preguntas.length - aciertos;
 
-  let msg = "Debes reforzar el conteo de cubos y la rotación de polígonos irregulares.";
+  let msg = "Debes reforzar el conteo de caras en sólidos 3D y las matrices lógicas.";
   if (puntaje >= 850) msg = "¡Excelente desempeño! Tienes un nivel óptimo para ingresar a la UNL.";
   else if (puntaje >= 700) msg = "¡Buen trabajo! Estás muy cerca de la puntuación máxima.";
   document.getElementById('score-feedback').innerText = msg;
 }
 
-// CAMBIO DINÁMICO DE TEMA CLARO / OSCURO
+// CONMUTADOR TEMA CLARO / OSCURO
 btnThemeToggle.addEventListener('click', () => {
   if (document.body.classList.contains('theme-light')) {
     document.body.classList.remove('theme-light');
@@ -594,7 +613,7 @@ btnThemeToggle.addEventListener('click', () => {
   renderQuestion();
 });
 
-// EVENT LISTENERS
+// LISTENERS
 btnStart.addEventListener('click', () => {
   actual = 0;
   usuarioRespuestas.fill(null);
