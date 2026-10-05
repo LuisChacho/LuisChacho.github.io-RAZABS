@@ -4,58 +4,104 @@ function getOptionStrokeColor() {
 }
 
 // ---------------------------------------------------------------------
-// GENERADOR DE GRÁFICOS SVG PARA EL VISOR PRINCIPAL (100% DIVERSIFICADO)
+// GENERADOR DE GRÁFICOS SVG DE ALTA DEFINICIÓN (100% DIVERSIFICADO)
 // ---------------------------------------------------------------------
 function renderSVGPattern(tipo, p) {
 
-  // 1. CONTEO DE CARAS DE SÓLIDOS 3D REALES (TIPO ESCALÓN Y FIGURA H)
+  // 1. CONTEO DE CARAS EN SÓLIDOS 3D REALES (ISOMÉTRICO PROFESIONAL)
   if (tipo === "solido3d") {
     if (p.modelo === "escalon") {
-      // Sólido en forma de grada/escalonado
-      return `<svg width="280" height="150" viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(40, 20)">
-          <!-- Frente -->
-          <polygon points="30,100 170,100 170,80 130,80 130,55 90,55 90,30 30,30" fill="#f8fafc" stroke="#ffffff" stroke-width="2"/>
-          <!-- Cara frontal lateral izquierda sombra -->
-          <polygon points="10,110 30,100 30,30 10,40" fill="#64748b" stroke="#ffffff" stroke-width="2"/>
-          <!-- Escalones Horizontales (Superficies superiores) -->
-          <polygon points="30,30 90,30 110,20 50,20" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
-          <polygon points="90,55 130,55 150,45 110,45" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
-          <polygon points="130,80 170,80 190,70 150,70" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
-          <!-- Paredes Verticales Atras -->
-          <polygon points="90,30 90,55 110,45 110,20" fill="#94a3b8" stroke="#ffffff" stroke-width="2"/>
-          <polygon points="130,55 130,80 150,70 150,45" fill="#94a3b8" stroke="#ffffff" stroke-width="2"/>
+      // Escalón HD con degradados y profundidad limpia
+      return `<svg width="380" height="200" viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="topGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#cbd5e1"/>
+            <stop offset="100%" stop-color="#94a3b8"/>
+          </linearGradient>
+          <linearGradient id="frontGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#e2e8f0"/>
+          </linearGradient>
+          <linearGradient id="sideGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#475569"/>
+            <stop offset="100%" stop-color="#1e293b"/>
+          </linearGradient>
+        </defs>
+
+        <g transform="translate(60, 25)">
+          <!-- Frente Principal -->
+          <polygon points="20,130 200,130 200,100 140,100 140,65 80,65 80,30 20,30" fill="url(#frontGrad)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          
+          <!-- Lateral Izquierdo (Grosor) -->
+          <polygon points="-10,145 20,130 20,30 -10,45" fill="url(#sideGrad)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          
+          <!-- Escalones Horizontales (Techos / Superficies) -->
+          <polygon points="20,30 80,30 110,15 50,15" fill="url(#topGrad)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="80,65 140,65 170,50 110,50" fill="url(#topGrad)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="140,100 200,100 230,85 170,85" fill="url(#topGrad)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          
+          <!-- Paredes Escalón Traseras / Intermedias -->
+          <polygon points="80,30 80,65 110,50 110,15" fill="#64748b" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="140,65 140,100 170,85 170,50" fill="#64748b" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          
           <!-- Lateral Derecho -->
-          <polygon points="170,80 170,100 190,90 190,70" fill="#475569" stroke="#ffffff" stroke-width="2"/>
+          <polygon points="200,100 200,130 230,115 230,85" fill="url(#sideGrad)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
         </g>
       </svg>`;
     }
 
     if (p.modelo === "figuraH") {
-      // Sólido tridimensional en forma de H
-      return `<svg width="260" height="160" viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(50, 15)">
-          <!-- Cara frontal H -->
-          <polygon points="10,10 45,10 45,50 85,50 85,10 120,10 120,120 85,120 85,80 45,80 45,120 10,120" fill="#f8fafc" stroke="#ffffff" stroke-width="2"/>
-          <!-- Sombra e inclinación isométrica -->
-          <polygon points="120,10 140,0 140,110 120,120" fill="#475569" stroke="#ffffff" stroke-width="2"/>
-          <polygon points="45,10 65,0 140,0 120,10" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
-          <!-- Techo columna izquierda -->
-          <polygon points="10,10 30,0 65,0 45,10" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
-          <!-- Hueco central H interno -->
-          <polygon points="45,50 65,40 85,40 85,50" fill="#94a3b8" stroke="#ffffff" stroke-width="2"/>
-          <polygon points="45,50 45,80 65,70 65,40" fill="#64748b" stroke="#ffffff" stroke-width="2"/>
+      // Estructura en H 3D vectorizada y estilizada
+      return `<svg width="360" height="210" viewBox="0 0 360 210" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hFront" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#f1f5f9"/>
+          </linearGradient>
+          <linearGradient id="hTop" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#cbd5e1"/>
+            <stop offset="100%" stop-color="#94a3b8"/>
+          </linearGradient>
+          <linearGradient id="hSide" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#334155"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+        </defs>
+
+        <g transform="translate(70, 20)">
+          <!-- Frente H -->
+          <polygon points="10,20 55,20 55,65 105,65 105,20 150,20 150,150 105,150 105,100 55,100 55,150 10,150" fill="url(#hFront)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          
+          <!-- Lado Izquierdo Frontal Sombra -->
+          <polygon points="-15,35 10,20 10,150 -15,165" fill="url(#hSide)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+
+          <!-- Techos Columnas -->
+          <polygon points="10,20 35,5 80,5 55,20" fill="url(#hTop)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="105,20 130,5 175,5 150,20" fill="url(#hTop)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="55,65 80,50 130,50 105,65" fill="url(#hTop)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+
+          <!-- Lateral Derecho -->
+          <polygon points="150,20 175,5 175,135 150,150" fill="url(#hSide)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+
+          <!-- Hueco Central H -->
+          <polygon points="55,65 55,100 80,85 80,50" fill="#475569" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
         </g>
       </svg>`;
     }
 
-    // Sólido tipo Prisma con Ranura en T
-    return `<svg width="260" height="150" viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(50, 20)">
-        <polygon points="10,30 130,30 130,90 10,90" fill="#f8fafc" stroke="#ffffff" stroke-width="2"/>
-        <polygon points="50,30 90,30 90,60 50,60" fill="#0f172a" stroke="#ffffff" stroke-width="2"/>
-        <polygon points="130,30 160,10 160,70 130,90" fill="#475569" stroke="#ffffff" stroke-width="2"/>
-        <polygon points="10,30 40,10 160,10 130,30" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
+    // Sólido Prismático con Corte Central HD
+    return `<svg width="360" height="200" viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="prismFront" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="100%" stop-color="#e2e8f0"/>
+        </linearGradient>
+      </defs>
+      <g transform="translate(65, 25)">
+        <polygon points="10,40 180,40 180,120 10,120" fill="url(#prismFront)" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+        <polygon points="60,40 130,40 130,80 60,80" fill="#0f172a" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+        <polygon points="180,40 220,15 220,95 180,120" fill="#334155" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
+        <polygon points="10,40 50,15 220,15 180,40" fill="#cbd5e1" stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"/>
       </g>
     </svg>`;
   }
@@ -98,27 +144,27 @@ function renderSVGPattern(tipo, p) {
     return `<svg width="450" height="150" viewBox="0 0 450 150" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">${carasHTML}</svg>`;
   }
 
-  // 3. ROTACIÓN DE POLÍGONOS Y ARRAYS IRREGULARES
+  // 3. ROTACIÓN DE FIGURAS IRREGULARES
   if (tipo === "rotacion_irreg") {
     const figPath = p.shapePath || "M -15,-20 L 15,-20 L 15,-5 L 0,-5 L 0,20 L -15,20 Z";
-    return `<svg width="280" height="120" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(60, 60)">
-        <rect x="-35" y="-35" width="70" height="70" rx="8" stroke="#475569" stroke-width="1.5" fill="none"/>
-        <path d="${figPath}" stroke="#ffffff" stroke-width="2" fill="#818cf8"/>
-        <circle cx="12" cy="-12" r="4" fill="#38bdf8"/>
-        <text x="0" y="48" fill="#94a3b8" font-size="10" text-anchor="middle">Original</text>
+    return `<svg width="320" height="140" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(70, 70)">
+        <rect x="-40" y="-40" width="80" height="80" rx="10" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+        <path d="${figPath}" stroke="#ffffff" stroke-width="2.5" fill="#6366f1"/>
+        <circle cx="12" cy="-12" r="5" fill="#38bdf8"/>
+        <text x="0" y="56" fill="#94a3b8" font-size="11" text-anchor="middle" font-weight="600">Original</text>
       </g>
       
-      <path d="M 120 50 Q 135 30 150 50" stroke="#818cf8" stroke-width="3" fill="none"/>
-      <text x="135" y="24" fill="#818cf8" font-size="12" font-weight="bold" text-anchor="middle">Giro: ${p.deg}°</text>
-      <text x="135" y="70" fill="#38bdf8" font-size="10" text-anchor="middle">${p.sentido}</text>
+      <path d="M 140 60 Q 160 35 180 60" stroke="#6366f1" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <text x="160" y="28" fill="#818cf8" font-size="13" font-weight="bold" text-anchor="middle">Giro: ${p.deg}°</text>
+      <text x="160" y="82" fill="#38bdf8" font-size="11" font-weight="600" text-anchor="middle">${p.sentido}</text>
 
-      <rect x="190" y="25" width="60" height="70" rx="8" stroke="#818cf8" stroke-dasharray="4 4" fill="none"/>
-      <text x="220" y="67" fill="#818cf8" font-size="28" font-weight="bold" text-anchor="middle">?</text>
+      <rect x="220" y="30" width="70" height="80" rx="10" stroke="#818cf8" stroke-dasharray="5 5" stroke-width="2" fill="#0f172a"/>
+      <text x="255" y="78" fill="#818cf8" font-size="32" font-weight="bold" text-anchor="middle">?</text>
     </svg>`;
   }
 
-  // 4. MATRICES 3x3 DINÁMICAS Y COHERENTES (FORMA EXTERNA Y ELEMENTO INTERNO)
+  // 4. MATRICES GRÁFICAS 3x3 COHERENTES
   if (tipo === "matriz_coherente") {
     const f1 = p.f1 || "circle";
     const f2 = p.f2 || "triangle";
@@ -136,47 +182,47 @@ function renderSVGPattern(tipo, p) {
       return `<polygon points="${cx},${cy-5} ${cx-4},${cy+3} ${cx+4},${cy+3}" fill="#ffffff"/>`;
     }
 
-    return `<svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+    return `<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
       <!-- Fila 1 -->
-      <rect x="10" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-      ${drawCellShape(f1, 40, 40)}${drawInnerDot("dot", 40, 40)}
+      <rect x="10" y="10" width="65" height="65" rx="8" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f1, 42.5, 42.5)}${drawInnerDot("dot", 42.5, 42.5)}
 
-      <rect x="80" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-      ${drawCellShape(f2, 110, 40)}${drawInnerDot("dot", 110, 40)}
+      <rect x="87.5" y="10" width="65" height="65" rx="8" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f2, 120, 42.5)}${drawInnerDot("dot", 120, 42.5)}
 
-      <rect x="150" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-      ${drawCellShape(f3, 180, 40)}${drawInnerDot("dot", 180, 40)}
+      <rect x="165" y="10" width="65" height="65" rx="8" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f3, 197.5, 42.5)}${drawInnerDot("dot", 197.5, 42.5)}
 
       <!-- Fila 2 -->
-      <rect x="10" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-      ${drawCellShape(f2, 40, 110)}${drawInnerDot("square", 40, 110)}
+      <rect x="10" y="87.5" width="65" height="65" rx="8" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f2, 42.5, 120)}${drawInnerDot("square", 42.5, 120)}
 
-      <rect x="80" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-      ${drawCellShape(f3, 110, 110)}${drawInnerDot("square", 110, 110)}
+      <rect x="87.5" y="87.5" width="65" height="65" rx="8" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f3, 120, 120)}${drawInnerDot("square", 120, 120)}
 
-      <rect x="150" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-      ${drawCellShape(f1, 180, 110)}${drawInnerDot("square", 180, 110)}
+      <rect x="165" y="87.5" width="65" height="65" rx="8" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f1, 197.5, 120)}${drawInnerDot("square", 197.5, 120)}
 
       <!-- Fila 3 -->
-      <rect x="10" y="150" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-      ${drawCellShape(f3, 40, 180)}${drawInnerDot("triangle", 40, 180)}
+      <rect x="10" y="165" width="65" height="65" rx="8" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f3, 42.5, 197.5)}${drawInnerDot("triangle", 42.5, 197.5)}
 
-      <rect x="80" y="150" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
-      ${drawCellShape(f1, 110, 180)}${drawInnerDot("triangle", 110, 180)}
+      <rect x="87.5" y="165" width="65" height="65" rx="8" stroke="#475569" stroke-width="2" fill="#0f172a"/>
+      ${drawCellShape(f1, 120, 197.5)}${drawInnerDot("triangle", 120, 197.5)}
 
-      <rect x="150" y="150" width="60" height="60" rx="6" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
-      <text x="180" y="188" fill="#818cf8" font-size="28" font-weight="bold" text-anchor="middle">?</text>
+      <rect x="165" y="165" width="65" height="65" rx="8" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
+      <text x="197.5" y="206" fill="#818cf8" font-size="30" font-weight="bold" text-anchor="middle">?</text>
     </svg>`;
   }
 
   // 5. SECUENCIAS
-  return `<svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
-    <g transform="translate(37, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(3, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
-    <g transform="translate(102, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(4, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
-    <g transform="translate(167, 40)"><circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(5, 15)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
+  return `<svg width="340" height="90" viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(40, 45)"><circle cx="0" cy="0" r="24" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(3, 16)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
+    <g transform="translate(110, 45)"><circle cx="0" cy="0" r="24" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(4, 16)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
+    <g transform="translate(180, 45)"><circle cx="0" cy="0" r="24" stroke="#475569" stroke-width="1.5" fill="#0f172a"/><polygon points="${getPolygonPoints(5, 16)}" stroke="#ffffff" stroke-width="2" fill="none"/></g>
 
-    <rect x="205" y="10" width="55" height="60" rx="6" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
-    <text x="232" y="48" fill="#818cf8" font-size="24" font-weight="bold" text-anchor="middle">?</text>
+    <rect x="225" y="12" width="60" height="66" rx="8" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
+    <text x="255" y="53" fill="#818cf8" font-size="26" font-weight="bold" text-anchor="middle">?</text>
   </svg>`;
 }
 
@@ -272,6 +318,7 @@ for (let i = 1; i <= 20; i++) {
   const mod = modelosSolidos[(i - 1) % modelosSolidos.length];
   const totalCaras = respuestasCaras[i - 1];
 
+  // ESPACIADO CORREGIDO: "12 caras" en lugar de "12caras"
   const rawOptions = [
     { html: `<strong>${totalCaras}</strong> caras` },
     { html: `<strong>${totalCaras - 2 > 0 ? totalCaras - 2 : 7}</strong> caras` },
@@ -289,7 +336,7 @@ for (let i = 1; i <= 20; i++) {
     svg: renderSVGPattern("solido3d", { modelo: mod }),
     opciones: balanced.opciones,
     correcta: balanced.correcta,
-    explicacion: `Contabilizando las caras frontales, posteriores, laterales, superiores e inferiores del sólido 3D, consta de exactamente ${totalCaras} caras[cite: 43].`
+    explicacion: `Contabilizando las caras frontales, posteriores, laterales, superiores e inferiores del sólido 3D, consta de exactamente ${totalCaras} caras.`
   });
 }
 
@@ -329,7 +376,7 @@ for (let i = 21; i <= 40; i++) {
     }),
     opciones: balanced.opciones,
     correcta: balanced.correcta,
-    explicacion: `Observando detenidamente los 16 rostros numerados de la muestra, se contabilizan exactamente ${targetCount} rostros con esa combinación[cite: 39].`
+    explicacion: `Observando detenidamente los 16 rostros numerados de la muestra, se contabilizan exactamente ${targetCount} rostros con esa combinación.`
   });
 }
 
@@ -391,7 +438,7 @@ for (let i = 61; i <= 80; i++) {
     svg: renderSVGPattern("matriz_coherente", { f1: shapes[0], f2: shapes[1], f3: shapes[2] }),
     opciones: balanced.opciones,
     correcta: balanced.correcta,
-    explicacion: `Analizando las tres formas principales y sus elementos internos por fila y columna, la casilla faltante completa la secuencia con la figura correspondiente[cite: 42].`
+    explicacion: `Analizando las tres formas principales y sus elementos internos por fila y columna, la casilla faltante completa la secuencia con la figura correspondiente.`
   });
 }
 
