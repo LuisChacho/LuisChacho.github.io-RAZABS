@@ -9,14 +9,14 @@
 </head>
 <body class="theme-light">
 
-  <!-- Header / Navbar con conmutador de tema -->
+  <!-- Header / Navbar con selector de Tema -->
   <header class="app-header">
     <div class="header-content">
       <div class="brand">
         <div class="brand-icon"><i class="fa-solid fa-brain"></i></div>
         <div>
           <h1>Simulador Abstracto UNL</h1>
-          <span class="subtext">Banco Completo CENES</span>
+          <span class="subtext">Banco Completo CENES (100 Preguntas)</span>
         </div>
       </div>
 
@@ -25,13 +25,13 @@
           <i class="fa-regular fa-clock"></i>
           <span id="timer-display">60:00</span>
         </div>
-        <button id="btn-theme-toggle" class="btn btn-theme" title="Cambiar Tema">
+        <button id="btn-theme-toggle" class="btn btn-theme" title="Cambiar Tema Claro/Oscuro">
           <i class="fa-solid fa-moon"></i>
         </button>
         <button id="btn-finish" class="btn btn-emerald">Finalizar Examen</button>
       </div>
 
-      <div id="badge-total" class="badge">100 Preguntas</div>
+      <div id="badge-total" class="badge">100 Preguntas Únicas</div>
     </div>
     <div id="progress-container" class="progress-container hidden">
       <div id="progress-bar" class="progress-bar"></div>
@@ -47,7 +47,7 @@
           <span class="tag"><i class="fa-solid fa-graduation-cap"></i> Admisión UNL</span>
           <h2>Domina el <span>Razonamiento Abstracto</span></h2>
           <p>
-            Plataforma interactiva con 100 ejercicios estructurados desde el Libro de CENES: Conteo de figuras, Rotaciones, Secuencias, Matrices 3x3, Superposición y Analogías.
+            Plataforma interactiva renovada con 100 ejercicios totalmente únicos: Conteo de cubos 3D, Rotaciones de figuras irregulares, Conteo de caras, Matrices 3x3, Secuencias y Analogías.
           </p>
 
           <div class="stats-grid">
@@ -56,7 +56,7 @@
               <span>Preguntas</span>
             </div>
             <div class="stat-card">
-              <h3>7</h3>
+              <h3>6</h3>
               <span>Módulos</span>
             </div>
             <div class="stat-card">
@@ -73,41 +73,41 @@
         <div class="topics-grid">
           <div class="topic-card">
             <i class="fa-solid fa-face-smile topic-icon color-indigo"></i>
-            <h4>1. Conteo de Caras</h4>
-            <p>16 rostros variados por muestra con distintos rasgos.</p>
+            <h4>1. Discriminación y Caras</h4>
+            <p>Detección de rasgos detallados en muestras de 16 rostros.</p>
           </div>
           <div class="topic-card">
-            <i class="fa-solid fa-rotate topic-icon color-cyan"></i>
-            <h4>2. Rotaciones</h4>
-            <p>Giros horarios y antihorarios con figuras vectoriales.</p>
+            <i class="fa-solid fa-shapes topic-icon color-cyan"></i>
+            <h4>2. Figuras Irregulares</h4>
+            <p>Rotaciones complejas con polígonos asimétricos y L's.</p>
           </div>
           <div class="topic-card">
-            <i class="fa-solid fa-table-cells-3x3 topic-icon color-emerald"></i>
-            <h4>3. Matrices 3x3</h4>
-            <p>Patrones de combinación lógica por filas y columnas.</p>
+            <i class="fa-solid fa-cubes topic-icon color-emerald"></i>
+            <h4>3. Conteo de Cubos 3D</h4>
+            <p>Conteo espacial en bloques y torres isométricas.</p>
           </div>
           <div class="topic-card">
-            <i class="fa-solid fa-layer-group topic-icon color-amber"></i>
-            <h4>4. Superposición</h4>
-            <p>Suma y resta gráfica de trazos simétricos.</p>
+            <i class="fa-solid fa-table-cells-3x3 topic-icon color-amber"></i>
+            <h4>4. Matrices y Secuencias</h4>
+            <p>Progresiones de lados, simetrías y analogías.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- VISTA 2: SIMULADOR CON PANEL LATERAL DE NAVEGACIÓN -->
+    <!-- VISTA 2: SIMULADOR CON NAVEGACIÓN LATERAL DE PREGUNTAS -->
     <section id="view-quiz" class="view-section">
       <div class="quiz-layout">
         
-        <!-- Panel Lateral de Selección de Preguntas (1 a 100) -->
+        <!-- Panel Lateral de Navegación Libre (1 a 100) -->
         <aside class="quiz-sidebar">
           <div class="sidebar-header">
             <h4>Navegación de Ítems</h4>
             <span id="answered-count" class="badge-sub">0 / 100</span>
           </div>
-          <p class="sidebar-info">Haz clic en cualquier número para responderlo libremente:</p>
+          <p class="sidebar-info">Selecciona cualquier número para saltar a la pregunta:</p>
           <div id="questions-grid" class="questions-grid">
-            <!-- Los 100 botones de navegación se generan dinámicamente desde JS -->
+            <!-- Renderizado dinámico desde JS -->
           </div>
         </aside>
 
@@ -138,7 +138,7 @@
       </div>
     </section>
 
-    <!-- VISTA 3: RESULTADOS -->
+    <!-- VISTA 3: RESULTADOS Y SOLUCIONARIO PASO A PASO -->
     <section id="view-results" class="view-section">
       <div class="results-hero">
         <div class="score-info">

@@ -6,7 +6,7 @@ Plataforma interactiva con **100 preguntas vectoriales únicas** orientada al ex
 - **Panel Lateral de Navegación (1 a 100)**: Permite saltar libremente a cualquier pregunta y monitorear los ítems respondidos.
 - **Selector de Tema Claro / Oscuro**: Botón conmutador con ajuste automático de trazos de alto contraste en los gráficos SVG.
 - **Sin Repeticiones y Respuestas Equilibradas**: Mezcla rotativa para asegurar distribución uniforme entre las alternativas A, B, C y D.
-- **100 Preguntas Únicas**: Conteo de figuras de 16 rostros, rotaciones dinámicas, secuencias, matrices 3x3 y analogías.
+- **100 Preguntas Únicas**: Conteo de figuras de 16 rostros, rotaciones de polígonos irregulares, conteo de cubos 3D, secuencias, matrices 3x3 y analogías.
 - **Cronómetro e Historial**: Tiempo de 60 minutos con reporte y solucionario paso a paso al finalizar.
 
 ## 📂 Estructura del Repositorio
