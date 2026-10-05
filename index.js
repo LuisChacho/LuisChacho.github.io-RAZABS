@@ -1,102 +1,108 @@
-// HELPER COMPLETO PARA GENERAR DIBUJOS Y SECUENCIAS SVG REALES TIPO CENES
+// HELPER PARA RENDERIZAR GRÁFICOS SVG REALES DEL LIBRO CENES
 function renderSVGPattern(tipo, p) {
-  // 1. MUESTRA COMPLETA DE CARAS (CONTEO DE CARAS - PÁGS. 39-41)
+  
+  // 1. MUESTRA COMPLETA DE 16 CARAS (PÁGS. 39-41)
   if (tipo === "cara") {
-    const totalFaces = p.total || 14;
-    const targetCount = p.targetCount;
-    let facesHTML = '';
+    const totalCaras = 16;
+    const targetCount = p.targetCount || 5;
+    let carasHTML = '';
     
-    // Generamos dos filas de 7 u 8 caras cada una (muestra completa)
-    const cols = Math.ceil(totalFaces / 2);
-    let currentTarget = 0;
+    // Matriz de 2 filas x 8 columnas
+    const cols = 8;
+    const rows = 2;
+    let contados = 0;
 
-    for (let i = 0; i < totalFaces; i++) {
-      const row = Math.floor(i / cols);
-      const col = i % cols;
-      const cx = 35 + col * 55;
-      const cy = 35 + row * 65;
+    for (let i = 0; i < totalCaras; i++) {
+      const r = Math.floor(i / cols);
+      const c = i % cols;
+      const cx = 35 + c * 52;
+      const cy = 35 + r * 65;
 
+      // Determinamos cuáles cumplen exactamente con la condición (triste + ojos abiertos)
       let esTarget = false;
-      if (currentTarget < targetCount && (i % 2 === 0 || i === totalFaces - 1)) {
+      if (contados < targetCount && (i % 3 === 0 || i === totalCaras - 1 || i === 1)) {
         esTarget = true;
-        currentTarget++;
+        contados++;
       }
 
-      // Rasgos: ojos abiertos/cerrados, boca triste/alegre
-      const ojos = esTarget 
-        ? `<circle cx="${cx - 8}" cy="${cy - 7}" r="3" fill="white"/><circle cx="${cx + 8}" cy="${cy - 7}" r="3" fill="white"/>` 
-        : (i % 3 === 0 
-            ? `<line x1="${cx - 12}" y1="${cy - 7}" x2="${cx - 4}" y2="${cy - 7}" stroke="white" stroke-width="2"/><line x1="${cx + 4}" y1="${cy - 7}" x2="${cx + 12}" y2="${cy - 7}" stroke="white" stroke-width="2"/>`
-            : `<circle cx="${cx - 8}" cy="${cy - 7}" r="1.5" fill="white"/><circle cx="${cx + 8}" cy="${cy - 7}" r="1.5" fill="white"/>`);
-      
-      const boca = esTarget 
-        ? `<path d="M ${cx - 10} ${cy + 12} Q ${cx} ${cy + 2} ${cx + 10} ${cy + 12}" stroke="white" stroke-width="2" fill="none"/>` 
-        : (i % 2 === 0 
-            ? `<path d="M ${cx - 10} ${cy + 5} Q ${cx} ${cy + 15} ${cx + 10} ${cy + 5}" stroke="white" stroke-width="2" fill="none"/>` 
-            : `<line x1="${cx - 10}" y1="${cy + 8}" x2="${cx + 10}" y2="${cy + 8}" stroke="white" stroke-width="2"/>`);
+      // Definición visual de los ojos
+      let ojosSVG = '';
+      if (esTarget || i % 2 === 0) {
+        // Ojos abiertos (dos círculos)
+        ojosSVG = `<circle cx="${cx - 7}" cy="${cy - 6}" r="3" fill="white"/><circle cx="${cx + 7}" cy="${cy - 6}" r="3" fill="white"/>`;
+      } else {
+        // Ojos cerrados/guiño (líneas horizontales)
+        ojosSVG = `<line x1="${cx - 11}" y1="${cy - 6}" x2="${cx - 3}" y2="${cy - 6}" stroke="white" stroke-width="2"/><line x1="${cx + 3}" y1="${cy - 6}" x2="${cx + 11}" y2="${cy - 6}" stroke="white" stroke-width="2"/>`;
+      }
 
-      const orejas = `<ellipse cx="${cx - 21}" cy="${cy}" rx="4" ry="7" stroke="white" stroke-width="1.5" fill="none"/><ellipse cx="${cx + 21}" cy="${cy}" rx="4" ry="7" stroke="white" stroke-width="1.5" fill="none"/>`;
-      const pelo = `<path d="M ${cx - 5} ${cy - 20} Q ${cx - 10} ${cy - 28} ${cx - 5} ${cy - 30} M ${cx} ${cy - 20} Q ${cx} ${cy - 30} ${cx + 3} ${cy - 32} M ${cx + 5} ${cy - 20} Q ${cx + 10} ${cy - 28} ${cx + 8} ${cy - 30}" stroke="white" stroke-width="1.5" fill="none"/>`;
+      // Definición visual de la boca
+      let bocaSVG = '';
+      if (esTarget) {
+        // Triste (arco hacia arriba)
+        bocaSVG = `<path d="M ${cx - 9} ${cy + 11} Q ${cx} ${cy + 2} ${cx + 9} ${cy + 11}" stroke="white" stroke-width="2" fill="none"/>`;
+      } else if (i % 2 === 1) {
+        // Alegre (arco hacia abajo)
+        bocaSVG = `<path d="M ${cx - 9} ${cy + 4} Q ${cx} ${cy + 13} ${cx + 9} ${cy + 4}" stroke="white" stroke-width="2" fill="none"/>`;
+      } else {
+        // Neutra (línea recta)
+        bocaSVG = `<line x1="${cx - 9}" y1="${cy + 8}" x2="${cx + 9}" y2="${cy + 8}" stroke="white" stroke-width="2"/>`;
+      }
 
-      facesHTML += `
+      // Detalle de Orejas y Pelo (estilo idéntico al libro)
+      const orejas = `<ellipse cx="${cx - 18}" cy="${cy}" rx="3.5" ry="6" stroke="white" stroke-width="1.5" fill="none"/><ellipse cx="${cx + 18}" cy="${cy}" rx="3.5" ry="6" stroke="white" stroke-width="1.5" fill="none"/>`;
+      const pelo = `<path d="M ${cx - 4} ${cy - 18} Q ${cx - 8} ${cy - 25} ${cx - 4} ${cy - 27} M ${cx} ${cy - 18} Q ${cx} ${cy - 27} ${cx + 3} ${cy - 29} M ${cx + 4} ${cy - 18} Q ${cx + 8} ${cy - 25} ${cx + 7} ${cy - 27}" stroke="white" stroke-width="1.5" fill="none"/>`;
+
+      carasHTML += `
         <g>
-          <circle cx="${cx}" cy="${cy}" r="20" stroke="white" stroke-width="2" fill="#0f172a"/>
+          <circle cx="${cx}" cy="${cy}" r="18" stroke="white" stroke-width="2" fill="#0f172a"/>
           ${orejas}
           ${pelo}
-          ${ojos}
-          ${boca}
-          <text x="${cx}" y="${cy + 30}" fill="#64748b" font-size="10" text-anchor="middle">${i + 1}</text>
+          ${ojosSVG}
+          ${bocaSVG}
+          <text x="${cx}" y="${cy + 28}" fill="#64748b" font-size="9" font-family="sans-serif" text-anchor="middle">${i + 1}</text>
         </g>
       `;
     }
 
-    const width = cols * 55 + 30;
-    return `<svg width="${width}" height="150" viewBox="0 0 ${width} 150" xmlns="http://www.w3.org/2000/svg">${facesHTML}</svg>`;
+    return `<svg width="450" height="150" viewBox="0 0 450 150" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">${carasHTML}</svg>`;
   }
 
-  // 2. FIGURA BASE DE ROTACIÓN CON FLECHA Y INDICADOR DE ÁNGULO (PÁGS. 43-47)
+  // 2. FIGURA DE ROTACIÓN (PÁGS. 43-47)
   if (tipo === "rotacion") {
-    return `<svg width="220" height="120" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg">
-      <!-- Figura Original (Izquierda) -->
-      <g transform="translate(50, 60)">
-        <circle cx="0" cy="0" r="35" stroke="#475569" stroke-width="2" fill="none"/>
-        <line x1="0" y1="-30" x2="0" y2="30" stroke="white" stroke-width="3"/>
-        <polygon points="0,-30 -8,-15 8,-15" fill="#818cf8"/>
-        <circle cx="15" cy="0" r="5" fill="#38bdf8"/>
-        <text x="0" y="50" fill="#94a3b8" font-size="11" text-anchor="middle">Figura Original</text>
+    return `<svg width="280" height="120" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(60, 60)">
+        <circle cx="0" cy="0" r="32" stroke="#475569" stroke-width="2" fill="none"/>
+        <line x1="0" y1="-28" x2="0" y2="28" stroke="white" stroke-width="3"/>
+        <polygon points="0,-28 -7,-14 7,-14" fill="#818cf8"/>
+        <circle cx="14" cy="0" r="4" fill="#38bdf8"/>
+        <text x="0" y="48" fill="#94a3b8" font-size="10" text-anchor="middle">Original</text>
       </g>
       
-      <!-- Flecha de Rotación con Ángulo -->
-      <path d="M 100 50 Q 110 30 120 50" stroke="#818cf8" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-      <text x="110" y="25" fill="#818cf8" font-size="14" font-weight="bold" text-anchor="middle">Giro: ${p.deg}°</text>
-      <text x="110" y="75" fill="#38bdf8" font-size="11" text-anchor="middle">Horario</text>
+      <path d="M 120 50 Q 135 30 150 50" stroke="#818cf8" stroke-width="3" fill="none"/>
+      <text x="135" y="24" fill="#818cf8" font-size="13" font-weight="bold" text-anchor="middle">Giro: ${p.deg}°</text>
+      <text x="135" y="72" fill="#38bdf8" font-size="10" text-anchor="middle">Horario</text>
 
-      <!-- Signo de Interrogación -->
-      <rect x="150" y="25" width="50" height="70" rx="8" stroke="#818cf8" stroke-dasharray="4 4" fill="none"/>
-      <text x="175" y="67" fill="#818cf8" font-size="28" font-weight="bold" text-anchor="middle">?</text>
+      <rect x="190" y="25" width="55" height="70" rx="8" stroke="#818cf8" stroke-dasharray="4 4" fill="none"/>
+      <text x="217" y="67" fill="#818cf8" font-size="28" font-weight="bold" text-anchor="middle">?</text>
     </svg>`;
   }
 
   // 3. SECUENCIAS HORIZONTALES (PÁGS. 48-50)
   if (tipo === "secuencia") {
     return `<svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
-      <!-- Casilla 1 -->
       <rect x="10" y="10" width="55" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
       <circle cx="37" cy="40" r="18" stroke="white" stroke-width="2" fill="none"/>
       <line x1="37" y1="22" x2="37" y2="58" stroke="white" stroke-width="2"/>
       
-      <!-- Casilla 2 -->
       <rect x="75" y="10" width="55" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
       <circle cx="102" cy="40" r="18" stroke="white" stroke-width="2" fill="none"/>
       <line x1="102" y1="22" x2="102" y2="58" stroke="white" stroke-width="2"/>
       <line x1="84" y1="40" x2="120" y2="40" stroke="white" stroke-width="2"/>
 
-      <!-- Casilla 3 -->
       <rect x="140" y="10" width="55" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
       <circle cx="167" cy="40" r="18" stroke="white" stroke-width="2" fill="none"/>
       <path d="M 167 22 L 167 58 M 149 40 L 185 40 M 154 27 L 180 53" stroke="white" stroke-width="2"/>
 
-      <!-- Casilla ? -->
       <rect x="205" y="10" width="55" height="60" rx="6" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
       <text x="232" y="48" fill="#818cf8" font-size="24" font-weight="bold" text-anchor="middle">?</text>
     </svg>`;
@@ -105,7 +111,6 @@ function renderSVGPattern(tipo, p) {
   // 4. MATRIZ GRÁFICA 3x3 COMPLETA (PÁGS. 51-59)
   if (tipo === "matriz") {
     return `<svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-      <!-- Fila 1 -->
       <rect x="10" y="10" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
       <circle cx="40" cy="40" r="18" stroke="white" stroke-width="2" fill="none"/>
       <circle cx="40" cy="40" r="5" fill="white"/>
@@ -118,7 +123,6 @@ function renderSVGPattern(tipo, p) {
       <rect x="165" y="25" width="30" height="30" stroke="white" stroke-width="2" fill="none"/>
       <circle cx="180" cy="40" r="5" fill="white"/>
 
-      <!-- Fila 2 -->
       <rect x="10" y="80" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
       <polygon points="40,92 23,122 57,122" stroke="white" stroke-width="2" fill="none"/>
       <rect x="33" y="103" width="14" height="14" fill="white"/>
@@ -131,7 +135,6 @@ function renderSVGPattern(tipo, p) {
       <circle cx="180" cy="110" r="18" stroke="white" stroke-width="2" fill="none"/>
       <rect x="173" y="103" width="14" height="14" fill="white"/>
 
-      <!-- Fila 3 -->
       <rect x="10" y="150" width="60" height="60" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
       <rect x="25" y="165" width="30" height="30" stroke="white" stroke-width="2" fill="none"/>
       <polygon points="40,172 32,185 48,185" fill="white"/>
@@ -140,7 +143,6 @@ function renderSVGPattern(tipo, p) {
       <circle cx="110" cy="180" r="18" stroke="white" stroke-width="2" fill="none"/>
       <polygon points="110,172 102,185 118,185" fill="white"/>
 
-      <!-- Casilla Incógnita ? -->
       <rect x="150" y="150" width="60" height="60" rx="6" stroke="#818cf8" stroke-width="2" stroke-dasharray="4 4" fill="#0f172a"/>
       <text x="180" y="188" fill="#818cf8" font-size="28" font-weight="bold" text-anchor="middle">?</text>
     </svg>`;
@@ -148,57 +150,53 @@ function renderSVGPattern(tipo, p) {
 
   // 5. ANALOGÍA A : B :: C : ? COMPLETA (PÁGS. 64-67)
   return `<svg width="320" height="80" viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
-    <!-- A -->
     <rect x="10" y="15" width="50" height="50" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
     <circle cx="35" cy="40" r="16" stroke="white" stroke-width="2" fill="none"/>
     <text x="35" y="73" fill="#64748b" font-size="10" text-anchor="middle">A</text>
 
     <text x="72" y="44" fill="#94a3b8" font-size="11" font-weight="bold">ES A</text>
 
-    <!-- B -->
     <rect x="100" y="15" width="50" height="50" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
     <circle cx="125" cy="40" r="16" stroke="white" stroke-width="2" fill="white"/>
     <text x="125" y="73" fill="#64748b" font-size="10" text-anchor="middle">B</text>
 
     <text x="162" y="44" fill="#818cf8" font-size="11" font-weight="bold">COMO</text>
 
-    <!-- C -->
     <rect x="200" y="15" width="50" height="50" rx="6" stroke="#475569" stroke-width="2" fill="#0f172a"/>
     <polygon points="225,23 209,55 241,55" stroke="white" stroke-width="2" fill="none"/>
     <text x="225" y="73" fill="#64748b" font-size="10" text-anchor="middle">C</text>
 
     <text x="262" y="44" fill="#94a3b8" font-size="11" font-weight="bold">ES A</text>
 
-    <!-- Incógnita ? -->
     <rect x="290" y="15" width="25" height="50" rx="6" stroke="#818cf8" stroke-dasharray="3 3" fill="#0f172a"/>
     <text x="302" y="48" fill="#818cf8" font-size="20" font-weight="bold" text-anchor="middle">?</text>
   </svg>`;
 }
 
-// RENDERIZADOR DE OPCIONES VECTORIALES SVG PARA ROTACIONES
+// RENDERIZADOR DE OPCIONES SVG PARA ROTACIONES
 function renderOptionSVG(angle) {
-  const normalized = ((angle % 360) + 360) % 360;
-  return `<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-    <g transform="translate(30, 30) rotate(${normalized})">
-      <circle cx="0" cy="0" r="22" stroke="#475569" stroke-width="1.5" fill="none"/>
-      <line x1="0" y1="-18" x2="0" y2="18" stroke="white" stroke-width="2.5"/>
-      <polygon points="0,-18 -6,-8 6,-8" fill="#818cf8"/>
-      <circle cx="10" cy="0" r="3.5" fill="#38bdf8"/>
+  const norm = ((angle % 360) + 360) % 360;
+  return `<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(25, 25) rotate(${norm})">
+      <circle cx="0" cy="0" r="18" stroke="#475569" stroke-width="1.5" fill="none"/>
+      <line x1="0" y1="-15" x2="0" y2="15" stroke="white" stroke-width="2"/>
+      <polygon points="0,-15 -5,-6 5,-6" fill="#818cf8"/>
+      <circle cx="8" cy="0" r="3" fill="#38bdf8"/>
     </g>
   </svg>`;
 }
 
-// CONSTRUCCIÓN DEL BANCO DE 100 PREGUNTAS
+// CONSTRUCCIÓN DEL BANCO COMPLETO DE 100 PREGUNTAS
 const preguntas = [];
 
 // MÓDULO 1: CONTEO DE CARAS (1 al 15)
 for (let i = 1; i <= 15; i++) {
-  const target = (i % 4) + 4; // Ej. 4, 5, 6, 7 caras
+  const target = (i % 5) + 3; // Ej. 3, 4, 5, 6, 7 caritas válidas
   preguntas.push({
     id: i,
     categoria: "Conteo de Caras y Patrones",
     enunciado: `¿Cuántos rostros tristes con ojos abiertos se encuentran en la muestra #${i}?`,
-    svg: renderSVGPattern("cara", { total: 14, targetCount: target }),
+    svg: renderSVGPattern("cara", { targetCount: target }),
     opciones: [
       { html: `<strong>${target - 1}</strong> rostros` },
       { html: `<strong>${target}</strong> rostros` },
@@ -206,32 +204,27 @@ for (let i = 1; i <= 15; i++) {
       { html: `<strong>${target + 2}</strong> rostros` }
     ],
     correcta: 1,
-    explicacion: `Observando detenidamente la muestra completa de 14 rostros (pág. 39), se contabilizan exactamente ${target} rostros con cejas caídas, boca triste y ambos ojos abiertos[cite: 1, 3].`
+    explicacion: `Contando detalladamente los 16 rostros de la muestra (págs. 39-41), se identifican exactamente ${target} rostros con la combinación boca triste + ojos abiertos[cite: 1, 3].`
   });
 }
 
-// MÓDULO 2: ROTACIONES CON OPCIONES GRÁFICAS VECTORIALES (16 al 35)
+// MÓDULO 2: ROTACIONES (16 al 35)
 const angulosGiro = [45, 90, 135, 180, 225, 270, 315, 540, 1125];
 for (let i = 16; i <= 35; i++) {
   const deg = angulosGiro[i % angulosGiro.length];
-  const anguloCorrecto = deg;
-  const anguloIncor1 = deg + 90;
-  const anguloIncor2 = deg - 90;
-  const anguloIncor3 = deg + 180;
-
   preguntas.push({
     id: i,
     categoria: "Rotaciones Gráficas",
     enunciado: `Identifique la figura resultante al aplicar una rotación de ${deg}° en sentido horario.`,
     svg: renderSVGPattern("rotacion", { deg: deg }),
     opciones: [
-      { html: renderOptionSVG(anguloCorrecto) },
-      { html: renderOptionSVG(anguloIncor1) },
-      { html: renderOptionSVG(anguloIncor2) },
-      { html: renderOptionSVG(anguloIncor3) }
+      { html: renderOptionSVG(deg) },
+      { html: renderOptionSVG(deg + 90) },
+      { html: renderOptionSVG(deg - 90) },
+      { html: renderOptionSVG(deg + 180) }
     ],
     correcta: 0,
-    explicacion: `Al aplicar un giro horario de ${deg}° (${deg % 360}° equivalentes), la flecha superior se desplaza exactamente a la posición mostrada en la opción A[cite: 5, 8].`
+    explicacion: `Al girar ${deg}° en sentido horario (págs. 43-47), la flecha indicadora rota hasta la posición representada en la alternativa A[cite: 5, 8].`
   });
 }
 
@@ -243,13 +236,13 @@ for (let i = 36; i <= 50; i++) {
     enunciado: `Escoja la figura que completa la secuencia gráfica horizontal en el lugar de '?' (Ejercicio ${i}).`,
     svg: renderSVGPattern("secuencia", {}),
     opciones: [
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="16" stroke="white" stroke-width="2" fill="none"/><path d="M 25 9 L 25 41 M 9 25 L 41 25 M 14 14 L 36 36 M 14 36 L 36 14" stroke="white" stroke-width="2"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="16" stroke="white" stroke-width="2" fill="white"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="16" stroke="white" stroke-width="2" fill="none"/><line x1="25" y1="9" x2="25" y2="41" stroke="white" stroke-width="2"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="white" stroke-width="2" fill="none"/></svg>` }
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><circle cx="22.5" cy="22.5" r="15" stroke="white" stroke-width="2" fill="none"/><path d="M 22.5 7 L 22.5 38 M 7 22.5 L 38 22.5 M 11 11 L 34 34 M 11 34 L 34 11" stroke="white" stroke-width="2"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><circle cx="22.5" cy="22.5" r="15" stroke="white" stroke-width="2" fill="white"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><circle cx="22.5" cy="22.5" r="15" stroke="white" stroke-width="2" fill="none"/><line x1="22.5" y1="7" x2="22.5" y2="38" stroke="white" stroke-width="2"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><rect x="10" y="10" width="25" height="25" stroke="white" stroke-width="2" fill="none"/></svg>` }
     ],
     correcta: 0,
-    explicacion: "En esta secuencia horizontal (págs. 48-50), en cada paso se agrega una nueva línea de eje. La figura 4 debe tener la estrella completa de 8 puntas internas[cite: 10, 11]."
+    explicacion: "En las secuencias del libro (págs. 48-50), cada casillero añade un nuevo eje interno. La cuarta posición completa los 8 radios interiores[cite: 10, 11]."
   });
 }
 
@@ -261,13 +254,13 @@ for (let i = 51; i <= 70; i++) {
     enunciado: `Identifique la figura que reemplaza el signo de interrogación en la matriz (Ejercicio ${i}).`,
     svg: renderSVGPattern("matriz", {}),
     opciones: [
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,10 9,40 41,40" stroke="white" stroke-width="2" fill="none"/><polygon points="25,20 17,33 33,33" fill="white"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="16" stroke="white" stroke-width="2" fill="none"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="white" stroke-width="2" fill="none"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,10 9,40 41,40" stroke="white" stroke-width="2" fill="white"/></svg>` }
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><polygon points="22.5,8 8,37 37,37" stroke="white" stroke-width="2" fill="none"/><polygon points="22.5,18 15,30 30,30" fill="white"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><circle cx="22.5" cy="22.5" r="15" stroke="white" stroke-width="2" fill="none"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><rect x="10" y="10" width="25" height="25" stroke="white" stroke-width="2" fill="none"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><polygon points="22.5,8 8,37 37,37" stroke="white" stroke-width="2" fill="white"/></svg>` }
     ],
     correcta: 0,
-    explicacion: "Analizando la matriz por filas (págs. 51-59), la tercera fila combina un triángulo contenedor con un elemento interior blanco rellenado[cite: 13, 21]."
+    explicacion: "Analizando la relación bidireccional por filas y columnas (págs. 51-59), la casilla libre se completa con la figura contenedor + relleno triangular[cite: 13, 21]."
   });
 }
 
@@ -276,16 +269,16 @@ for (let i = 71; i <= 80; i++) {
   preguntas.push({
     id: i,
     categoria: "Superposición de Figuras",
-    enunciado: `Seleccione la figura resultante de superponer la fila 1 y fila 2 (Ejercicio ${i}).`,
+    enunciado: `Seleccione la figura resultante de superponer la columna 1 y columna 2 (Ejercicio ${i}).`,
     svg: renderSVGPattern("matriz", {}),
     opciones: [
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="white" stroke-width="2" fill="none"/><line x1="10" y1="10" x2="40" y2="40" stroke="white" stroke-width="2"/><line x1="40" y1="10" x2="10" y2="40" stroke="white" stroke-width="2"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="white" stroke-width="2" fill="none"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="white" stroke-width="2" fill="none"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><line x1="10" y1="25" x2="40" y2="25" stroke="white" stroke-width="2"/></svg>` }
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><rect x="10" y="10" width="25" height="25" stroke="white" stroke-width="2" fill="none"/><line x1="10" y1="10" x2="35" y2="35" stroke="white" stroke-width="2"/><line x1="35" y1="10" x2="10" y2="35" stroke="white" stroke-width="2"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><rect x="10" y="10" width="25" height="25" stroke="white" stroke-width="2" fill="none"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><circle cx="22.5" cy="22.5" r="12" stroke="white" stroke-width="2" fill="none"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><line x1="10" y1="22.5" x2="35" y2="22.5" stroke="white" stroke-width="2"/></svg>` }
     ],
     correcta: 0,
-    explicacion: "Al sumar gráficamente los trazos (págs. 60-63), las diagonales internas se superponen formando una 'X' completa dentro del marco cuadrado[cite: 22, 25]."
+    explicacion: "En las matrices de superposición (págs. 60-63), se suman visualmente los trazos internos formando la 'X' completa[cite: 22, 25]."
   });
 }
 
@@ -297,13 +290,13 @@ for (let i = 81; i <= 90; i++) {
     enunciado: `Indique la figura que completa la analogía A : B :: C : ? (Ejercicio ${i}).`,
     svg: renderSVGPattern("analogia", {}),
     opciones: [
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,10 9,40 41,40" stroke="white" stroke-width="2" fill="white"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,10 9,40 41,40" stroke="white" stroke-width="2" fill="none"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="white" stroke-width="2" fill="white"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="white" stroke-width="2" fill="white"/></svg>` }
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><polygon points="22.5,8 8,37 37,37" stroke="white" stroke-width="2" fill="white"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><polygon points="22.5,8 8,37 37,37" stroke="white" stroke-width="2" fill="none"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><circle cx="22.5" cy="22.5" r="12" stroke="white" stroke-width="2" fill="white"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><rect x="10" y="10" width="25" height="25" stroke="white" stroke-width="2" fill="white"/></svg>` }
     ],
     correcta: 0,
-    explicacion: "La relación entre A y B es rellenar por completo la figura transparente. Al aplicar la misma regla a C (triángulo), resulta el triángulo completamente blanco[cite: 26, 29]."
+    explicacion: "La relación entre A y B es el rellenado completo de la forma. Aplicando esa regla a C (triángulo hueco), la respuesta es el triángulo sólido[cite: 26, 29]."
   });
 }
 
@@ -312,26 +305,26 @@ for (let i = 91; i <= 100; i++) {
   preguntas.push({
     id: i,
     categoria: "Secuencias Analógicas",
-    enunciado: `Determine la figura que responde a la secuencia analógica de referencia (Ejercicio ${i}).`,
+    enunciado: `Determine la figura que responde a la secuencia analógica (Ejercicio ${i}).`,
     svg: renderSVGPattern("secuencia", {}),
     opciones: [
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="white" stroke-width="2" fill="none"/><line x1="25" y1="10" x2="25" y2="40" stroke="white" stroke-width="2"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><rect x="10" y="10" width="30" height="30" stroke="white" stroke-width="2" fill="none"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><circle cx="25" cy="25" r="15" stroke="white" stroke-width="2" fill="white"/></svg>` },
-      { html: `<svg width="50" height="50" viewBox="0 0 50 50"><polygon points="25,10 9,40 41,40" stroke="white" stroke-width="2" fill="none"/></svg>` }
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><circle cx="22.5" cy="22.5" r="14" stroke="white" stroke-width="2" fill="none"/><line x1="22.5" y1="8.5" x2="22.5" y2="36.5" stroke="white" stroke-width="2"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><rect x="10" y="10" width="25" height="25" stroke="white" stroke-width="2" fill="none"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><circle cx="22.5" cy="22.5" r="14" stroke="white" stroke-width="2" fill="white"/></svg>` },
+      { html: `<svg width="45" height="45" viewBox="0 0 45 45"><polygon points="22.5,8 8,37 37,37" stroke="white" stroke-width="2" fill="none"/></svg>` }
     ],
     correcta: 0,
-    explicacion: "Basándonos en el patrón analógico (págs. 68-71), se debe mantener la simetría vertical dividida por una línea central[cite: 30, 33]."
+    explicacion: "Siguiendo la pauta del patrón de referencia (págs. 68-71), se conserva el contorno circular con el eje simétrico vertical[cite: 30, 33]."
   });
 }
 
-// ESTADO GLOBAL
+// ESTADO GLOBAL DE LA APLICACIÓN
 let actual = 0;
 let usuarioRespuestas = new Array(100).fill(null);
 let tiempoRestante = 3600;
 let timerId = null;
 
-// DOM
+// ELEMENTOS DOM
 const viewHome = document.getElementById('view-home');
 const viewQuiz = document.getElementById('view-quiz');
 const viewResults = document.getElementById('view-results');
